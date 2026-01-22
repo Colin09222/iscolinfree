@@ -314,9 +314,9 @@
                 <div class="card">
                     <div class="card-label">🗳️ Poll</div>
                     <div class="poll-container">
-                        <div style="font-size: 1.1rem; font-weight: 600;">Glizzy or Slider?</div>
+                        <div style="font-size: 1.1rem; font-weight: 600;">Glover or Slider?</div>
                         <div class="poll-options">
-                            <button class="poll-btn" onclick="vote('glizzy')">Glizzy</button>
+                            <button class="poll-btn" onclick="vote('glover')">Glover</button>
                             <button class="poll-btn" onclick="vote('slider')">Slider</button>
                         </div>
                         <div class="poll-results" id="poll-results"></div>
@@ -355,13 +355,13 @@
         
         function vote(choice) {
             localStorage.setItem('poll_vote', choice);
-            let glizzy = parseInt(localStorage.getItem('poll_glizzy') || '0');
+            let glover = parseInt(localStorage.getItem('poll_glover') || '0');
             let slider = parseInt(localStorage.getItem('poll_slider') || '0');
             
-            if (choice === 'glizzy') glizzy++;
+            if (choice === 'glover') glover++;
             else slider++;
             
-            localStorage.setItem('poll_glizzy', glizzy);
+            localStorage.setItem('poll_glover', glover);
             localStorage.setItem('poll_slider', slider);
             
             updatePollResults();
@@ -371,17 +371,17 @@
         }
         
         function updatePollResults() {
-            const glizzy = parseInt(localStorage.getItem('poll_glizzy') || '0');
+            const glover = parseInt(localStorage.getItem('poll_glover') || '0');
             const slider = parseInt(localStorage.getItem('poll_slider') || '0');
-            const total = glizzy + slider;
+            const total = glover + slider;
             
             if (total > 0) {
-                const glizzyPercent = Math.round((glizzy / total) * 100);
+                const gloverPercent = Math.round((glover / total) * 100);
                 const sliderPercent = Math.round((slider / total) * 100);
                 
                 document.getElementById('poll-results').innerHTML = `
-                    <div>Glizzy: ${glizzyPercent}% (${glizzy})</div>
-                    <div class="poll-bar"><div class="poll-bar-fill" style="width: ${glizzyPercent}%"></div></div>
+                    <div>Glover: ${gloverPercent}% (${glover})</div>
+                    <div class="poll-bar"><div class="poll-bar-fill" style="width: ${gloverPercent}%"></div></div>
                     <div style="margin-top: 8px;">Slider: ${sliderPercent}% (${slider})</div>
                     <div class="poll-bar"><div class="poll-bar-fill" style="width: ${sliderPercent}%"></div></div>
                 `;
