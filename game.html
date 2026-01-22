@@ -35,12 +35,12 @@
             text-align: center;
             margin-bottom: 20px;
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
         }
         
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--green);
             text-shadow: 0 0 20px rgba(0,255,65,0.5);
             letter-spacing: 3px;
@@ -74,8 +74,10 @@
         
         #gameContainer {
             position: relative;
-            border: 2px solid var(--green-dim);
-            box-shadow: 0 0 30px rgba(0,255,65,0.2);
+            border: 3px solid var(--green-dim);
+            box-shadow: 0 0 50px rgba(0,255,65,0.3);
+            border-radius: 10px;
+            overflow: hidden;
         }
         
         #gameCanvas {
@@ -87,20 +89,21 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 560px;
-            margin-top: 15px;
+            max-width: 700px;
+            margin-top: 20px;
             font-family: 'Orbitron', sans-serif;
         }
         
         .score, .lives {
             color: var(--green);
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0,255,65,0.5);
         }
         
         .instructions {
             margin-top: 20px;
             color: var(--text-dim);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-align: center;
         }
         
@@ -109,13 +112,13 @@
         }
         
         #startBtn {
-            margin-top: 20px;
-            padding: 15px 40px;
+            margin-top: 25px;
+            padding: 18px 50px;
             background: transparent;
             border: 2px solid var(--green);
             color: var(--green);
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -139,9 +142,10 @@
         
         .win-image {
             position: absolute;
-            width: 150px;
+            width: 200px;
             animation: floatIn 0.5s ease-out forwards;
-            border: 3px solid gold;
+            border: 4px solid gold;
+            border-radius: 10px;
         }
         
         @keyframes floatIn {
@@ -152,7 +156,7 @@
         .win-text {
             position: absolute;
             font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: gold;
             text-shadow: 0 0 20px gold, 0 0 40px orange;
             animation: popIn 0.3s ease-out forwards;
@@ -178,6 +182,7 @@
             cursor: pointer;
             z-index: 1001;
             display: none;
+            border-radius: 10px;
         }
         
         #gameOverOverlay {
@@ -196,38 +201,40 @@
         
         .game-over-text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
+            font-size: 5rem;
             color: #ff3333;
-            text-shadow: 0 0 30px #ff3333;
-            margin-bottom: 30px;
+            text-shadow: 0 0 50px #ff3333;
+            margin-bottom: 40px;
         }
         
         #retryBtn {
-            padding: 20px 50px;
+            padding: 20px 60px;
             background: #ff3333;
             border: none;
             color: #fff;
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
             cursor: pointer;
+            border-radius: 10px;
         }
         
         .mobile-controls {
             display: none;
-            margin-top: 20px;
+            margin-top: 25px;
             flex-direction: column;
             gap: 10px;
         }
         
         .control-btn {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: rgba(0,255,65,0.1);
             border: 2px solid var(--green);
             color: var(--green);
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
             touch-action: manipulation;
+            border-radius: 10px;
         }
         
         .control-btn:active {
@@ -241,10 +248,11 @@
             gap: 10px;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 750px) {
             .mobile-controls { display: flex; }
-            #gameCanvas { max-width: 100%; height: auto; }
-            .game-over-text { font-size: 2rem; }
+            #gameCanvas { max-width: 95vw; height: auto; }
+            .game-over-text { font-size: 2.5rem; }
+            .logo { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -260,7 +268,7 @@
     </nav>
     
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="560" height="620"></canvas>
+        <canvas id="gameCanvas" width="700" height="700"></canvas>
     </div>
     
     <div class="game-info">
@@ -271,8 +279,7 @@
     <button id="startBtn">START GAME</button>
     
     <div class="instructions">
-        <span>ARROW KEYS</span> or <span>WASD</span> to move<br>
-        Eat all the dots to win!
+        <span>ARROW KEYS</span> or <span>WASD</span> to move // Eat all dots to win!
     </div>
     
     <div class="mobile-controls">
@@ -307,8 +314,8 @@
         const winImg = new Image();
         winImg.src = 'https://i.imgur.com/w5P8pYn.jpeg';
         
-        const tileSize = 40;
-        const rows = 15;
+        const tileSize = 50;
+        const rows = 14;
         const cols = 14;
         
         let map = [
@@ -322,21 +329,21 @@
             [0,0,0,0,1,0,0,0,0,1,0,0,0,0],
             [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
             [0,1,0,0,1,0,0,0,0,1,0,0,1,0],
-            [0,1,0,0,1,0,0,0,0,1,0,0,1,0],
-            [0,3,1,1,1,1,1,1,1,1,1,1,3,0],
-            [0,1,0,0,1,0,0,0,0,1,0,0,1,0],
+            [0,3,0,0,1,0,0,0,0,1,0,0,3,0],
+            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
             [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
             [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         ];
         
         let originalMap = JSON.parse(JSON.stringify(map));
         
-        let pacman = { x: 1, y: 1, dir: 'right', nextDir: 'right' };
+        // Smooth movement - use pixel positions
+        let pacman = { x: 1, y: 1, targetX: 1, targetY: 1, dir: 'right', nextDir: 'right', moving: false };
         let ghosts = [
-            { x: 6, y: 7, dir: 'left', speed: 1 },
-            { x: 7, y: 7, dir: 'right', speed: 1 },
-            { x: 6, y: 8, dir: 'up', speed: 0.8 },
-            { x: 7, y: 8, dir: 'down', speed: 0.8 }
+            { x: 6, y: 6, targetX: 6, targetY: 6, dir: 'left' },
+            { x: 7, y: 6, targetX: 7, targetY: 6, dir: 'right' },
+            { x: 6, y: 7, targetX: 6, targetY: 7, dir: 'up' },
+            { x: 7, y: 7, targetX: 7, targetY: 7, dir: 'down' }
         ];
         
         let score = 0;
@@ -344,7 +351,10 @@
         let gameRunning = false;
         let powerMode = false;
         let powerTimer = null;
-        let gameLoop = null;
+        let animationId = null;
+        let lastTime = 0;
+        const moveSpeed = 4; // pixels per frame
+        const ghostSpeed = 3;
         
         function countDots() {
             let count = 0;
@@ -363,25 +373,31 @@
                     const y = r * tileSize;
                     
                     if (map[r][c] === 0) {
-                        ctx.fillStyle = '#001a00';
+                        ctx.fillStyle = '#001500';
                         ctx.fillRect(x, y, tileSize, tileSize);
                         ctx.strokeStyle = '#00ff41';
                         ctx.lineWidth = 2;
-                        ctx.strokeRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
+                        ctx.strokeRect(x + 3, y + 3, tileSize - 6, tileSize - 6);
                     } else {
                         ctx.fillStyle = '#000';
                         ctx.fillRect(x, y, tileSize, tileSize);
                         
                         if (map[r][c] === 1) {
                             ctx.fillStyle = '#00ff41';
+                            ctx.shadowColor = '#00ff41';
+                            ctx.shadowBlur = 10;
                             ctx.beginPath();
-                            ctx.arc(x + tileSize/2, y + tileSize/2, 4, 0, Math.PI * 2);
+                            ctx.arc(x + tileSize/2, y + tileSize/2, 5, 0, Math.PI * 2);
                             ctx.fill();
+                            ctx.shadowBlur = 0;
                         } else if (map[r][c] === 3) {
                             ctx.fillStyle = '#00ff41';
+                            ctx.shadowColor = '#00ff41';
+                            ctx.shadowBlur = 20;
                             ctx.beginPath();
-                            ctx.arc(x + tileSize/2, y + tileSize/2, 10, 0, Math.PI * 2);
+                            ctx.arc(x + tileSize/2, y + tileSize/2, 12, 0, Math.PI * 2);
                             ctx.fill();
+                            ctx.shadowBlur = 0;
                         }
                     }
                 }
@@ -391,7 +407,7 @@
         function drawPacman() {
             const x = pacman.x * tileSize + tileSize/2;
             const y = pacman.y * tileSize + tileSize/2;
-            const size = tileSize - 8;
+            const size = tileSize - 6;
             
             ctx.save();
             ctx.beginPath();
@@ -401,17 +417,20 @@
             ctx.restore();
             
             ctx.strokeStyle = '#00ff41';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
+            ctx.shadowColor = '#00ff41';
+            ctx.shadowBlur = 15;
             ctx.beginPath();
             ctx.arc(x, y, size/2, 0, Math.PI * 2);
             ctx.stroke();
+            ctx.shadowBlur = 0;
         }
         
         function drawGhosts() {
             ghosts.forEach(ghost => {
                 const x = ghost.x * tileSize + tileSize/2;
                 const y = ghost.y * tileSize + tileSize/2;
-                const size = tileSize - 8;
+                const size = tileSize - 6;
                 
                 ctx.save();
                 ctx.beginPath();
@@ -420,114 +439,163 @@
                 
                 if (powerMode) {
                     ctx.fillStyle = '#0000ff';
-                    ctx.fill();
+                    ctx.fillRect(x - size/2, y - size/2, size, size);
                 } else {
                     ctx.drawImage(ghostImg, x - size/2, y - size/2, size, size);
                 }
                 ctx.restore();
                 
                 ctx.strokeStyle = powerMode ? '#0000ff' : '#ff0000';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
+                ctx.shadowColor = powerMode ? '#0000ff' : '#ff0000';
+                ctx.shadowBlur = 15;
                 ctx.beginPath();
                 ctx.arc(x, y, size/2, 0, Math.PI * 2);
                 ctx.stroke();
+                ctx.shadowBlur = 0;
             });
         }
         
         function canMove(x, y) {
-            if (x < 0 || x >= cols || y < 0 || y >= rows) return false;
-            return map[Math.round(y)][Math.round(x)] !== 0;
+            const gridX = Math.round(x);
+            const gridY = Math.round(y);
+            if (gridX < 0 || gridX >= cols || gridY < 0 || gridY >= rows) return false;
+            return map[gridY][gridX] !== 0;
         }
         
-        function movePacman() {
-            let tryDir = pacman.nextDir;
-            let dx = 0, dy = 0;
+        function canMoveDir(fromX, fromY, dir) {
+            let checkX = Math.round(fromX);
+            let checkY = Math.round(fromY);
             
-            if (tryDir === 'left') dx = -1;
-            if (tryDir === 'right') dx = 1;
-            if (tryDir === 'up') dy = -1;
-            if (tryDir === 'down') dy = 1;
+            if (dir === 'left') checkX--;
+            if (dir === 'right') checkX++;
+            if (dir === 'up') checkY--;
+            if (dir === 'down') checkY++;
             
-            if (canMove(pacman.x + dx, pacman.y + dy)) {
-                pacman.dir = tryDir;
+            if (checkX < 0 || checkX >= cols || checkY < 0 || checkY >= rows) return false;
+            return map[checkY][checkX] !== 0;
+        }
+        
+        function updatePacman() {
+            // Check if we're at a grid position
+            const atGridX = Math.abs(pacman.x - Math.round(pacman.x)) < 0.05;
+            const atGridY = Math.abs(pacman.y - Math.round(pacman.y)) < 0.05;
+            
+            if (atGridX && atGridY) {
+                pacman.x = Math.round(pacman.x);
+                pacman.y = Math.round(pacman.y);
+                
+                // Try to change direction
+                if (canMoveDir(pacman.x, pacman.y, pacman.nextDir)) {
+                    pacman.dir = pacman.nextDir;
+                }
+                
+                // Eat dots
+                const tileX = Math.round(pacman.x);
+                const tileY = Math.round(pacman.y);
+                
+                if (map[tileY] && map[tileY][tileX] === 1) {
+                    map[tileY][tileX] = 2;
+                    score += 10;
+                    updateScore();
+                } else if (map[tileY] && map[tileY][tileX] === 3) {
+                    map[tileY][tileX] = 2;
+                    score += 50;
+                    updateScore();
+                    activatePowerMode();
+                }
+                
+                if (countDots() === 0) {
+                    winGame();
+                    return;
+                }
             }
             
-            dx = 0; dy = 0;
+            // Move in current direction
+            let dx = 0, dy = 0;
             if (pacman.dir === 'left') dx = -1;
             if (pacman.dir === 'right') dx = 1;
             if (pacman.dir === 'up') dy = -1;
             if (pacman.dir === 'down') dy = 1;
             
-            if (canMove(pacman.x + dx, pacman.y + dy)) {
-                pacman.x += dx;
-                pacman.y += dy;
-            }
+            const nextX = pacman.x + dx * (moveSpeed / tileSize);
+            const nextY = pacman.y + dy * (moveSpeed / tileSize);
             
-            const tileX = Math.round(pacman.x);
-            const tileY = Math.round(pacman.y);
+            // Check if next position is valid
+            const targetGridX = Math.round(pacman.x + dx);
+            const targetGridY = Math.round(pacman.y + dy);
             
-            if (map[tileY][tileX] === 1) {
-                map[tileY][tileX] = 2;
-                score += 10;
-                updateScore();
-            } else if (map[tileY][tileX] === 3) {
-                map[tileY][tileX] = 2;
-                score += 50;
-                updateScore();
-                activatePowerMode();
-            }
-            
-            if (countDots() === 0) {
-                winGame();
+            if (canMove(targetGridX, targetGridY)) {
+                pacman.x = nextX;
+                pacman.y = nextY;
             }
         }
         
-        function moveGhosts() {
+        function updateGhosts() {
             const dirs = ['left', 'right', 'up', 'down'];
             
             ghosts.forEach(ghost => {
-                if (Math.random() < 0.3) {
-                    if (pacman.x < ghost.x && canMove(ghost.x - 1, ghost.y)) ghost.dir = 'left';
-                    else if (pacman.x > ghost.x && canMove(ghost.x + 1, ghost.y)) ghost.dir = 'right';
-                    else if (pacman.y < ghost.y && canMove(ghost.x, ghost.y - 1)) ghost.dir = 'up';
-                    else if (pacman.y > ghost.y && canMove(ghost.x, ghost.y + 1)) ghost.dir = 'down';
+                const atGridX = Math.abs(ghost.x - Math.round(ghost.x)) < 0.05;
+                const atGridY = Math.abs(ghost.y - Math.round(ghost.y)) < 0.05;
+                
+                if (atGridX && atGridY) {
+                    ghost.x = Math.round(ghost.x);
+                    ghost.y = Math.round(ghost.y);
+                    
+                    // Decide new direction
+                    if (Math.random() < 0.4) {
+                        // Chase pacman
+                        const dx = pacman.x - ghost.x;
+                        const dy = pacman.y - ghost.y;
+                        
+                        let preferredDirs = [];
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            if (dx > 0) preferredDirs.push('right', 'down', 'up', 'left');
+                            else preferredDirs.push('left', 'down', 'up', 'right');
+                        } else {
+                            if (dy > 0) preferredDirs.push('down', 'right', 'left', 'up');
+                            else preferredDirs.push('up', 'right', 'left', 'down');
+                        }
+                        
+                        for (let d of preferredDirs) {
+                            if (canMoveDir(ghost.x, ghost.y, d)) {
+                                ghost.dir = d;
+                                break;
+                            }
+                        }
+                    } else {
+                        // Random valid direction
+                        const validDirs = dirs.filter(d => canMoveDir(ghost.x, ghost.y, d));
+                        if (validDirs.length > 0) {
+                            ghost.dir = validDirs[Math.floor(Math.random() * validDirs.length)];
+                        }
+                    }
                 }
                 
+                // Move
                 let dx = 0, dy = 0;
                 if (ghost.dir === 'left') dx = -1;
                 if (ghost.dir === 'right') dx = 1;
                 if (ghost.dir === 'up') dy = -1;
                 if (ghost.dir === 'down') dy = 1;
                 
-                if (canMove(ghost.x + dx, ghost.y + dy)) {
-                    ghost.x += dx * ghost.speed;
-                    ghost.y += dy * ghost.speed;
-                } else {
-                    const validDirs = dirs.filter(d => {
-                        let ddx = 0, ddy = 0;
-                        if (d === 'left') ddx = -1;
-                        if (d === 'right') ddx = 1;
-                        if (d === 'up') ddy = -1;
-                        if (d === 'down') ddy = 1;
-                        return canMove(ghost.x + ddx, ghost.y + ddy);
-                    });
-                    if (validDirs.length > 0) {
-                        ghost.dir = validDirs[Math.floor(Math.random() * validDirs.length)];
-                    }
-                }
+                const targetGridX = Math.round(ghost.x + dx);
+                const targetGridY = Math.round(ghost.y + dy);
                 
-                ghost.x = Math.max(0, Math.min(cols - 1, ghost.x));
-                ghost.y = Math.max(0, Math.min(rows - 1, ghost.y));
+                if (canMove(targetGridX, targetGridY)) {
+                    ghost.x += dx * (ghostSpeed / tileSize);
+                    ghost.y += dy * (ghostSpeed / tileSize);
+                }
             });
         }
         
         function checkCollision() {
             ghosts.forEach((ghost, index) => {
                 const dist = Math.sqrt(Math.pow(pacman.x - ghost.x, 2) + Math.pow(pacman.y - ghost.y, 2));
-                if (dist < 0.8) {
+                if (dist < 0.7) {
                     if (powerMode) {
                         ghost.x = 6 + (index % 2);
-                        ghost.y = 7;
+                        ghost.y = 6;
                         score += 200;
                         updateScore();
                     } else {
@@ -546,16 +614,16 @@
         function activatePowerMode() {
             powerMode = true;
             if (powerTimer) clearTimeout(powerTimer);
-            powerTimer = setTimeout(() => { powerMode = false; }, 5000);
+            powerTimer = setTimeout(() => { powerMode = false; }, 6000);
         }
         
         function resetPositions() {
             pacman = { x: 1, y: 1, dir: 'right', nextDir: 'right' };
             ghosts = [
-                { x: 6, y: 7, dir: 'left', speed: 1 },
-                { x: 7, y: 7, dir: 'right', speed: 1 },
-                { x: 6, y: 8, dir: 'up', speed: 0.8 },
-                { x: 7, y: 8, dir: 'down', speed: 0.8 }
+                { x: 6, y: 6, dir: 'left' },
+                { x: 7, y: 6, dir: 'right' },
+                { x: 6, y: 7, dir: 'up' },
+                { x: 7, y: 7, dir: 'down' }
             ];
         }
         
@@ -569,53 +637,55 @@
         
         function gameOver() {
             gameRunning = false;
-            clearInterval(gameLoop);
+            cancelAnimationFrame(animationId);
             document.getElementById('gameOverOverlay').style.display = 'flex';
         }
         
         function winGame() {
             gameRunning = false;
-            clearInterval(gameLoop);
+            cancelAnimationFrame(animationId);
             
             const overlay = document.getElementById('winOverlay');
             overlay.style.display = 'block';
             overlay.innerHTML = '';
             
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 25; i++) {
                 setTimeout(() => {
                     const img = document.createElement('img');
                     img.src = 'https://i.imgur.com/w5P8pYn.jpeg';
                     img.className = 'win-image';
-                    img.style.left = Math.random() * (window.innerWidth - 150) + 'px';
-                    img.style.top = Math.random() * (window.innerHeight - 150) + 'px';
+                    img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+                    img.style.top = Math.random() * (window.innerHeight - 200) + 'px';
                     overlay.appendChild(img);
                     
                     const text = document.createElement('div');
                     text.className = 'win-text';
                     text.textContent = 'Cignetti type shit!!';
-                    text.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+                    text.style.left = Math.random() * (window.innerWidth - 300) + 'px';
                     text.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-                    text.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                    text.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
                     overlay.appendChild(text);
-                }, i * 100);
+                }, i * 80);
             }
             
             document.getElementById('playAgainBtn').style.display = 'block';
         }
         
-        function draw() {
+        function gameLoop(timestamp) {
+            if (!gameRunning) return;
+            
+            // Smooth 60fps
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            updatePacman();
+            updateGhosts();
+            checkCollision();
+            
             drawMap();
             drawPacman();
             drawGhosts();
-        }
-        
-        function update() {
-            if (!gameRunning) return;
-            movePacman();
-            moveGhosts();
-            checkCollision();
-            draw();
+            
+            animationId = requestAnimationFrame(gameLoop);
         }
         
         function startGame() {
@@ -633,15 +703,15 @@
             document.getElementById('gameOverOverlay').style.display = 'none';
             
             gameRunning = true;
-            if (gameLoop) clearInterval(gameLoop);
-            gameLoop = setInterval(update, 200);
+            animationId = requestAnimationFrame(gameLoop);
         }
         
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'a') pacman.nextDir = 'left';
-            if (e.key === 'ArrowRight' || e.key === 'd') pacman.nextDir = 'right';
-            if (e.key === 'ArrowUp' || e.key === 'w') pacman.nextDir = 'up';
-            if (e.key === 'ArrowDown' || e.key === 's') pacman.nextDir = 'down';
+            e.preventDefault();
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') pacman.nextDir = 'left';
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') pacman.nextDir = 'right';
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') pacman.nextDir = 'up';
+            if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') pacman.nextDir = 'down';
         });
         
         document.querySelectorAll('.control-btn').forEach(btn => {
@@ -653,9 +723,19 @@
         document.getElementById('playAgainBtn').addEventListener('click', startGame);
         document.getElementById('retryBtn').addEventListener('click', startGame);
         
-        pacmanImg.onload = () => draw();
-        ghostImg.onload = () => draw();
-        draw();
+        // Initial draw
+        function initialDraw() {
+            if (pacmanImg.complete && ghostImg.complete) {
+                drawMap();
+                drawPacman();
+                drawGhosts();
+            } else {
+                requestAnimationFrame(initialDraw);
+            }
+        }
+        pacmanImg.onload = initialDraw;
+        ghostImg.onload = initialDraw;
+        initialDraw();
     </script>
 </body>
 </html>
