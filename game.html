@@ -33,14 +33,12 @@
         
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 800px;
+            margin-bottom: 15px;
         }
         
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--green);
             text-shadow: 0 0 20px rgba(0,255,65,0.5);
             letter-spacing: 3px;
@@ -49,18 +47,18 @@
         .nav {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
             justify-content: center;
         }
         
         .nav-btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-dim);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s;
             text-decoration: none;
@@ -73,10 +71,9 @@
         }
         
         #gameContainer {
-            position: relative;
             border: 3px solid var(--green-dim);
-            box-shadow: 0 0 50px rgba(0,255,65,0.3);
-            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(0,255,65,0.3);
+            border-radius: 8px;
             overflow: hidden;
         }
         
@@ -89,21 +86,21 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 700px;
-            margin-top: 20px;
+            max-width: 450px;
+            margin-top: 15px;
             font-family: 'Orbitron', sans-serif;
         }
         
         .score, .lives {
             color: var(--green);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-shadow: 0 0 10px rgba(0,255,65,0.5);
         }
         
         .instructions {
-            margin-top: 20px;
+            margin-top: 15px;
             color: var(--text-dim);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: center;
         }
         
@@ -112,15 +109,16 @@
         }
         
         #startBtn {
-            margin-top: 25px;
-            padding: 18px 50px;
+            margin-top: 20px;
+            padding: 15px 40px;
             background: transparent;
             border: 2px solid var(--green);
             color: var(--green);
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.2s;
+            border-radius: 5px;
         }
         
         #startBtn:hover {
@@ -135,28 +133,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.92);
             z-index: 1000;
             overflow: hidden;
         }
         
         .win-image {
             position: absolute;
-            width: 200px;
-            animation: floatIn 0.5s ease-out forwards;
+            width: 180px;
+            animation: floatIn 0.4s ease-out forwards;
             border: 4px solid gold;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         @keyframes floatIn {
-            from { transform: scale(0) rotate(-30deg); opacity: 0; }
+            from { transform: scale(0) rotate(-20deg); opacity: 0; }
             to { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         
         .win-text {
             position: absolute;
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
             color: gold;
             text-shadow: 0 0 20px gold, 0 0 40px orange;
             animation: popIn 0.3s ease-out forwards;
@@ -170,19 +167,19 @@
         
         #playAgainBtn {
             position: fixed;
-            bottom: 50px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 20px 50px;
+            padding: 18px 45px;
             background: gold;
             border: none;
             color: #000;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
             z-index: 1001;
             display: none;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         #gameOverOverlay {
@@ -201,40 +198,40 @@
         
         .game-over-text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
+            font-size: 4rem;
             color: #ff3333;
-            text-shadow: 0 0 50px #ff3333;
-            margin-bottom: 40px;
+            text-shadow: 0 0 40px #ff3333;
+            margin-bottom: 30px;
         }
         
         #retryBtn {
-            padding: 20px 60px;
+            padding: 18px 50px;
             background: #ff3333;
             border: none;
             color: #fff;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         .mobile-controls {
             display: none;
-            margin-top: 25px;
+            margin-top: 20px;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .control-btn {
-            width: 70px;
-            height: 70px;
-            background: rgba(0,255,65,0.1);
+            width: 65px;
+            height: 65px;
+            background: rgba(0,255,65,0.15);
             border: 2px solid var(--green);
             color: var(--green);
-            font-size: 2rem;
+            font-size: 1.8rem;
             cursor: pointer;
             touch-action: manipulation;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         .control-btn:active {
@@ -245,14 +242,14 @@
         .control-row {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         
-        @media (max-width: 750px) {
+        @media (max-width: 500px) {
             .mobile-controls { display: flex; }
             #gameCanvas { max-width: 95vw; height: auto; }
             .game-over-text { font-size: 2.5rem; }
-            .logo { font-size: 1.3rem; }
+            .logo { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -268,7 +265,7 @@
     </nav>
     
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="700" height="700"></canvas>
+        <canvas id="gameCanvas" width="450" height="450"></canvas>
     </div>
     
     <div class="game-info">
@@ -279,7 +276,7 @@
     <button id="startBtn">START GAME</button>
     
     <div class="instructions">
-        <span>ARROW KEYS</span> or <span>WASD</span> to move // Eat all dots to win!
+        <span>ARROW KEYS</span> or <span>WASD</span> to move
     </div>
     
     <div class="mobile-controls">
@@ -311,39 +308,29 @@
         const ghostImg = new Image();
         ghostImg.src = 'https://i.imgur.com/MSSXjCV.jpeg';
         
-        const winImg = new Image();
-        winImg.src = 'https://i.imgur.com/w5P8pYn.jpeg';
-        
         const tileSize = 50;
-        const rows = 14;
-        const cols = 14;
+        const rows = 9;
+        const cols = 9;
         
+        // Smaller, simpler map - easier to win
         let map = [
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-            [0,1,0,0,1,0,0,0,0,1,0,0,1,0],
-            [0,3,0,0,1,0,0,0,0,1,0,0,3,0],
-            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-            [0,1,0,0,1,0,1,1,0,1,0,0,1,0],
-            [0,1,1,1,1,0,1,1,0,1,1,1,1,0],
-            [0,0,0,0,1,0,0,0,0,1,0,0,0,0],
-            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-            [0,1,0,0,1,0,0,0,0,1,0,0,1,0],
-            [0,3,0,0,1,0,0,0,0,1,0,0,3,0],
-            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-            [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            [0,0,0,0,0,0,0,0,0],
+            [0,1,1,1,1,1,1,1,0],
+            [0,1,0,1,0,1,0,1,0],
+            [0,1,1,1,1,1,1,1,0],
+            [0,1,0,1,0,1,0,1,0],
+            [0,1,1,1,1,1,1,1,0],
+            [0,1,0,1,0,1,0,1,0],
+            [0,3,1,1,1,1,1,3,0],
+            [0,0,0,0,0,0,0,0,0]
         ];
         
         let originalMap = JSON.parse(JSON.stringify(map));
         
-        // Smooth movement - use pixel positions
-        let pacman = { x: 1, y: 1, targetX: 1, targetY: 1, dir: 'right', nextDir: 'right', moving: false };
+        let pacman = { x: 1, y: 1, dir: 'right', nextDir: 'right' };
         let ghosts = [
-            { x: 6, y: 6, targetX: 6, targetY: 6, dir: 'left' },
-            { x: 7, y: 6, targetX: 7, targetY: 6, dir: 'right' },
-            { x: 6, y: 7, targetX: 6, targetY: 7, dir: 'up' },
-            { x: 7, y: 7, targetX: 7, targetY: 7, dir: 'down' }
+            { x: 7, y: 7, dir: 'left' },
+            { x: 1, y: 7, dir: 'right' }
         ];
         
         let score = 0;
@@ -352,9 +339,9 @@
         let powerMode = false;
         let powerTimer = null;
         let animationId = null;
-        let lastTime = 0;
-        const moveSpeed = 4; // pixels per frame
-        const ghostSpeed = 3;
+        
+        const playerSpeed = 0.12;
+        const ghostSpeed = 0.06;
         
         function countDots() {
             let count = 0;
@@ -373,11 +360,11 @@
                     const y = r * tileSize;
                     
                     if (map[r][c] === 0) {
-                        ctx.fillStyle = '#001500';
+                        ctx.fillStyle = '#001a00';
                         ctx.fillRect(x, y, tileSize, tileSize);
                         ctx.strokeStyle = '#00ff41';
                         ctx.lineWidth = 2;
-                        ctx.strokeRect(x + 3, y + 3, tileSize - 6, tileSize - 6);
+                        ctx.strokeRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
                     } else {
                         ctx.fillStyle = '#000';
                         ctx.fillRect(x, y, tileSize, tileSize);
@@ -385,15 +372,15 @@
                         if (map[r][c] === 1) {
                             ctx.fillStyle = '#00ff41';
                             ctx.shadowColor = '#00ff41';
-                            ctx.shadowBlur = 10;
+                            ctx.shadowBlur = 8;
                             ctx.beginPath();
-                            ctx.arc(x + tileSize/2, y + tileSize/2, 5, 0, Math.PI * 2);
+                            ctx.arc(x + tileSize/2, y + tileSize/2, 6, 0, Math.PI * 2);
                             ctx.fill();
                             ctx.shadowBlur = 0;
                         } else if (map[r][c] === 3) {
                             ctx.fillStyle = '#00ff41';
                             ctx.shadowColor = '#00ff41';
-                            ctx.shadowBlur = 20;
+                            ctx.shadowBlur = 15;
                             ctx.beginPath();
                             ctx.arc(x + tileSize/2, y + tileSize/2, 12, 0, Math.PI * 2);
                             ctx.fill();
@@ -407,7 +394,7 @@
         function drawPacman() {
             const x = pacman.x * tileSize + tileSize/2;
             const y = pacman.y * tileSize + tileSize/2;
-            const size = tileSize - 6;
+            const size = tileSize - 4;
             
             ctx.save();
             ctx.beginPath();
@@ -419,7 +406,7 @@
             ctx.strokeStyle = '#00ff41';
             ctx.lineWidth = 3;
             ctx.shadowColor = '#00ff41';
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 12;
             ctx.beginPath();
             ctx.arc(x, y, size/2, 0, Math.PI * 2);
             ctx.stroke();
@@ -430,7 +417,7 @@
             ghosts.forEach(ghost => {
                 const x = ghost.x * tileSize + tileSize/2;
                 const y = ghost.y * tileSize + tileSize/2;
-                const size = tileSize - 6;
+                const size = tileSize - 4;
                 
                 ctx.save();
                 ctx.beginPath();
@@ -438,17 +425,17 @@
                 ctx.clip();
                 
                 if (powerMode) {
-                    ctx.fillStyle = '#0000ff';
+                    ctx.fillStyle = '#0055ff';
                     ctx.fillRect(x - size/2, y - size/2, size, size);
                 } else {
                     ctx.drawImage(ghostImg, x - size/2, y - size/2, size, size);
                 }
                 ctx.restore();
                 
-                ctx.strokeStyle = powerMode ? '#0000ff' : '#ff0000';
+                ctx.strokeStyle = powerMode ? '#0055ff' : '#ff0000';
                 ctx.lineWidth = 3;
-                ctx.shadowColor = powerMode ? '#0000ff' : '#ff0000';
-                ctx.shadowBlur = 15;
+                ctx.shadowColor = powerMode ? '#0055ff' : '#ff0000';
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
                 ctx.arc(x, y, size/2, 0, Math.PI * 2);
                 ctx.stroke();
@@ -456,78 +443,82 @@
             });
         }
         
-        function canMove(x, y) {
-            const gridX = Math.round(x);
-            const gridY = Math.round(y);
-            if (gridX < 0 || gridX >= cols || gridY < 0 || gridY >= rows) return false;
-            return map[gridY][gridX] !== 0;
+        function isWall(gridX, gridY) {
+            if (gridX < 0 || gridX >= cols || gridY < 0 || gridY >= rows) return true;
+            return map[gridY][gridX] === 0;
         }
         
-        function canMoveDir(fromX, fromY, dir) {
-            let checkX = Math.round(fromX);
-            let checkY = Math.round(fromY);
+        function canMoveInDir(x, y, dir) {
+            let targetX = Math.round(x);
+            let targetY = Math.round(y);
             
-            if (dir === 'left') checkX--;
-            if (dir === 'right') checkX++;
-            if (dir === 'up') checkY--;
-            if (dir === 'down') checkY++;
+            if (dir === 'left') targetX = Math.floor(x - 0.1);
+            if (dir === 'right') targetX = Math.ceil(x + 0.1);
+            if (dir === 'up') targetY = Math.floor(y - 0.1);
+            if (dir === 'down') targetY = Math.ceil(y + 0.1);
             
-            if (checkX < 0 || checkX >= cols || checkY < 0 || checkY >= rows) return false;
-            return map[checkY][checkX] !== 0;
+            return !isWall(targetX, targetY);
         }
         
         function updatePacman() {
-            // Check if we're at a grid position
-            const atGridX = Math.abs(pacman.x - Math.round(pacman.x)) < 0.05;
-            const atGridY = Math.abs(pacman.y - Math.round(pacman.y)) < 0.05;
+            // Check if aligned to grid
+            const alignedX = Math.abs(pacman.x - Math.round(pacman.x)) < 0.08;
+            const alignedY = Math.abs(pacman.y - Math.round(pacman.y)) < 0.08;
             
-            if (atGridX && atGridY) {
+            // Try to turn if at intersection
+            if (alignedX && alignedY) {
                 pacman.x = Math.round(pacman.x);
                 pacman.y = Math.round(pacman.y);
                 
-                // Try to change direction
-                if (canMoveDir(pacman.x, pacman.y, pacman.nextDir)) {
+                if (canMoveInDir(pacman.x, pacman.y, pacman.nextDir)) {
                     pacman.dir = pacman.nextDir;
                 }
-                
-                // Eat dots
-                const tileX = Math.round(pacman.x);
-                const tileY = Math.round(pacman.y);
-                
-                if (map[tileY] && map[tileY][tileX] === 1) {
+            }
+            
+            // Calculate movement
+            let dx = 0, dy = 0;
+            if (pacman.dir === 'left') dx = -playerSpeed;
+            if (pacman.dir === 'right') dx = playerSpeed;
+            if (pacman.dir === 'up') dy = -playerSpeed;
+            if (pacman.dir === 'down') dy = playerSpeed;
+            
+            const newX = pacman.x + dx;
+            const newY = pacman.y + dy;
+            
+            // Check if new position hits wall
+            let checkX = pacman.dir === 'left' ? Math.floor(newX + 0.2) : Math.floor(newX + 0.8);
+            let checkY = pacman.dir === 'up' ? Math.floor(newY + 0.2) : Math.floor(newY + 0.8);
+            
+            if (pacman.dir === 'left' || pacman.dir === 'right') {
+                checkY = Math.round(pacman.y);
+            } else {
+                checkX = Math.round(pacman.x);
+            }
+            
+            if (!isWall(checkX, checkY)) {
+                pacman.x = newX;
+                pacman.y = newY;
+            }
+            
+            // Eat dots
+            const tileX = Math.round(pacman.x);
+            const tileY = Math.round(pacman.y);
+            
+            if (tileY >= 0 && tileY < rows && tileX >= 0 && tileX < cols) {
+                if (map[tileY][tileX] === 1) {
                     map[tileY][tileX] = 2;
                     score += 10;
                     updateScore();
-                } else if (map[tileY] && map[tileY][tileX] === 3) {
+                } else if (map[tileY][tileX] === 3) {
                     map[tileY][tileX] = 2;
                     score += 50;
                     updateScore();
                     activatePowerMode();
                 }
-                
-                if (countDots() === 0) {
-                    winGame();
-                    return;
-                }
             }
             
-            // Move in current direction
-            let dx = 0, dy = 0;
-            if (pacman.dir === 'left') dx = -1;
-            if (pacman.dir === 'right') dx = 1;
-            if (pacman.dir === 'up') dy = -1;
-            if (pacman.dir === 'down') dy = 1;
-            
-            const nextX = pacman.x + dx * (moveSpeed / tileSize);
-            const nextY = pacman.y + dy * (moveSpeed / tileSize);
-            
-            // Check if next position is valid
-            const targetGridX = Math.round(pacman.x + dx);
-            const targetGridY = Math.round(pacman.y + dy);
-            
-            if (canMove(targetGridX, targetGridY)) {
-                pacman.x = nextX;
-                pacman.y = nextY;
+            if (countDots() === 0) {
+                winGame();
             }
         }
         
@@ -535,56 +526,66 @@
             const dirs = ['left', 'right', 'up', 'down'];
             
             ghosts.forEach(ghost => {
-                const atGridX = Math.abs(ghost.x - Math.round(ghost.x)) < 0.05;
-                const atGridY = Math.abs(ghost.y - Math.round(ghost.y)) < 0.05;
+                const alignedX = Math.abs(ghost.x - Math.round(ghost.x)) < 0.06;
+                const alignedY = Math.abs(ghost.y - Math.round(ghost.y)) < 0.06;
                 
-                if (atGridX && atGridY) {
+                if (alignedX && alignedY) {
                     ghost.x = Math.round(ghost.x);
                     ghost.y = Math.round(ghost.y);
                     
-                    // Decide new direction
-                    if (Math.random() < 0.4) {
-                        // Chase pacman
-                        const dx = pacman.x - ghost.x;
-                        const dy = pacman.y - ghost.y;
-                        
-                        let preferredDirs = [];
-                        if (Math.abs(dx) > Math.abs(dy)) {
-                            if (dx > 0) preferredDirs.push('right', 'down', 'up', 'left');
-                            else preferredDirs.push('left', 'down', 'up', 'right');
-                        } else {
-                            if (dy > 0) preferredDirs.push('down', 'right', 'left', 'up');
-                            else preferredDirs.push('up', 'right', 'left', 'down');
-                        }
-                        
-                        for (let d of preferredDirs) {
-                            if (canMoveDir(ghost.x, ghost.y, d)) {
-                                ghost.dir = d;
-                                break;
+                    // Pick new direction
+                    const validDirs = dirs.filter(d => canMoveInDir(ghost.x, ghost.y, d));
+                    
+                    if (validDirs.length > 0) {
+                        // Sometimes chase, sometimes random
+                        if (Math.random() < 0.5 && !powerMode) {
+                            // Chase pacman
+                            const dx = pacman.x - ghost.x;
+                            const dy = pacman.y - ghost.y;
+                            
+                            let preferred = [];
+                            if (Math.abs(dx) > Math.abs(dy)) {
+                                preferred = dx > 0 ? ['right','down','up','left'] : ['left','down','up','right'];
+                            } else {
+                                preferred = dy > 0 ? ['down','right','left','up'] : ['up','right','left','down'];
                             }
-                        }
-                    } else {
-                        // Random valid direction
-                        const validDirs = dirs.filter(d => canMoveDir(ghost.x, ghost.y, d));
-                        if (validDirs.length > 0) {
+                            
+                            for (let d of preferred) {
+                                if (validDirs.includes(d)) {
+                                    ghost.dir = d;
+                                    break;
+                                }
+                            }
+                        } else {
                             ghost.dir = validDirs[Math.floor(Math.random() * validDirs.length)];
                         }
                     }
                 }
                 
-                // Move
+                // Move ghost
                 let dx = 0, dy = 0;
-                if (ghost.dir === 'left') dx = -1;
-                if (ghost.dir === 'right') dx = 1;
-                if (ghost.dir === 'up') dy = -1;
-                if (ghost.dir === 'down') dy = 1;
+                const speed = powerMode ? ghostSpeed * 0.5 : ghostSpeed;
                 
-                const targetGridX = Math.round(ghost.x + dx);
-                const targetGridY = Math.round(ghost.y + dy);
+                if (ghost.dir === 'left') dx = -speed;
+                if (ghost.dir === 'right') dx = speed;
+                if (ghost.dir === 'up') dy = -speed;
+                if (ghost.dir === 'down') dy = speed;
                 
-                if (canMove(targetGridX, targetGridY)) {
-                    ghost.x += dx * (ghostSpeed / tileSize);
-                    ghost.y += dy * (ghostSpeed / tileSize);
+                const newX = ghost.x + dx;
+                const newY = ghost.y + dy;
+                
+                let checkX = ghost.dir === 'left' ? Math.floor(newX + 0.3) : Math.floor(newX + 0.7);
+                let checkY = ghost.dir === 'up' ? Math.floor(newY + 0.3) : Math.floor(newY + 0.7);
+                
+                if (ghost.dir === 'left' || ghost.dir === 'right') {
+                    checkY = Math.round(ghost.y);
+                } else {
+                    checkX = Math.round(ghost.x);
+                }
+                
+                if (!isWall(checkX, checkY)) {
+                    ghost.x = newX;
+                    ghost.y = newY;
                 }
             });
         }
@@ -592,10 +593,11 @@
         function checkCollision() {
             ghosts.forEach((ghost, index) => {
                 const dist = Math.sqrt(Math.pow(pacman.x - ghost.x, 2) + Math.pow(pacman.y - ghost.y, 2));
-                if (dist < 0.7) {
+                if (dist < 0.6) {
                     if (powerMode) {
-                        ghost.x = 6 + (index % 2);
-                        ghost.y = 6;
+                        // Reset ghost position
+                        ghost.x = index === 0 ? 7 : 1;
+                        ghost.y = 7;
                         score += 200;
                         updateScore();
                     } else {
@@ -614,16 +616,14 @@
         function activatePowerMode() {
             powerMode = true;
             if (powerTimer) clearTimeout(powerTimer);
-            powerTimer = setTimeout(() => { powerMode = false; }, 6000);
+            powerTimer = setTimeout(() => { powerMode = false; }, 7000);
         }
         
         function resetPositions() {
             pacman = { x: 1, y: 1, dir: 'right', nextDir: 'right' };
             ghosts = [
-                { x: 6, y: 6, dir: 'left' },
-                { x: 7, y: 6, dir: 'right' },
-                { x: 6, y: 7, dir: 'up' },
-                { x: 7, y: 7, dir: 'down' }
+                { x: 7, y: 7, dir: 'left' },
+                { x: 1, y: 7, dir: 'right' }
             ];
         }
         
@@ -649,32 +649,31 @@
             overlay.style.display = 'block';
             overlay.innerHTML = '';
             
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
                     const img = document.createElement('img');
                     img.src = 'https://i.imgur.com/w5P8pYn.jpeg';
                     img.className = 'win-image';
-                    img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
-                    img.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+                    img.style.left = Math.random() * (window.innerWidth - 180) + 'px';
+                    img.style.top = Math.random() * (window.innerHeight - 150) + 'px';
                     overlay.appendChild(img);
                     
                     const text = document.createElement('div');
                     text.className = 'win-text';
                     text.textContent = 'Cignetti type shit!!';
-                    text.style.left = Math.random() * (window.innerWidth - 300) + 'px';
+                    text.style.left = Math.random() * (window.innerWidth - 250) + 'px';
                     text.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-                    text.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+                    text.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
                     overlay.appendChild(text);
-                }, i * 80);
+                }, i * 70);
             }
             
             document.getElementById('playAgainBtn').style.display = 'block';
         }
         
-        function gameLoop(timestamp) {
+        function gameLoop() {
             if (!gameRunning) return;
             
-            // Smooth 60fps
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             updatePacman();
@@ -707,7 +706,9 @@
         }
         
         document.addEventListener('keydown', (e) => {
-            e.preventDefault();
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key)) {
+                e.preventDefault();
+            }
             if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') pacman.nextDir = 'left';
             if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') pacman.nextDir = 'right';
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') pacman.nextDir = 'up';
@@ -725,17 +726,15 @@
         
         // Initial draw
         function initialDraw() {
-            if (pacmanImg.complete && ghostImg.complete) {
-                drawMap();
-                drawPacman();
-                drawGhosts();
-            } else {
-                requestAnimationFrame(initialDraw);
-            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawMap();
+            if (pacmanImg.complete) drawPacman();
+            if (ghostImg.complete) drawGhosts();
         }
+        
         pacmanImg.onload = initialDraw;
         ghostImg.onload = initialDraw;
-        initialDraw();
+        setTimeout(initialDraw, 100);
     </script>
 </body>
 </html>
