@@ -24,7 +24,7 @@
             100% { background-position: 0% 50%; }
         }
         
-        .container { max-width: 600px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; }
         
         .greeting {
             text-align: center;
@@ -49,6 +49,21 @@
             color: #666;
             margin-bottom: 40px;
             font-size: 0.85rem;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .heart-rate-card {
+                order: -1;
+            }
         }
         
         .grid { display: grid; gap: 16px; }
@@ -93,12 +108,15 @@
         .heart-rate-card {
             background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(60, 30, 30, 0.8) 100%);
             border-color: rgba(255, 100, 100, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
         }
         
         .fort-card .card-value { color: #4ade80; }
         .fort-card .card-value.no { color: #f87171; }
         
-        .pulsoid-widget { width: 100%; height: 100px; border: none; border-radius: 12px; }
+        .pulsoid-widget { width: 100%; height: 180px; border: none; border-radius: 12px; }
         
         .dub-image { max-width: 100%; border-radius: 12px; margin-top: 10px; }
         .no-dub { color: #666; font-style: italic; font-size: 1rem; }
@@ -132,18 +150,105 @@
             50% { opacity: 1; }
         }
         
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #444;
-            font-size: 0.75rem;
-        }
-        
         .time {
             text-align: center;
             color: #555;
             font-size: 0.8rem;
             margin-bottom: 30px;
+        }
+        
+        .poll-container {
+            margin-top: 16px;
+        }
+        
+        .poll-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .poll-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .poll-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .poll-btn.selected {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: #4ade80;
+        }
+        
+        .poll-results {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .poll-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .poll-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #a5b4fc);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .game-preview {
+            margin-top: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-preview img {
+            width: 100%;
+            display: block;
+        }
+        
+        .game-preview-info {
+            padding: 12px;
+        }
+        
+        .game-preview-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        
+        .game-preview-link {
+            color: #a5b4fc;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        
+        .game-preview-link:hover {
+            text-decoration: underline;
+        }
+        
+        .kirk-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(50, 40, 20, 0.8) 100%);
+        }
+        
+        .kirk-card .card-value {
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -154,71 +259,88 @@
         <div class="subtitle">live status dashboard</div>
         <div class="time" id="current-time"></div>
         
-        <div class="grid">
+        <div class="main-layout">
+            <div class="grid">
+                <div class="card status-card">
+                    <div class="card-label">🎯 Daily Status</div>
+                    <div class="card-value"><span class="status-dot"></span><span id="daily-status"><span class="loading">Loading...</span></span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">👀 Currently Doing</div>
+                    <div class="card-value" id="currently-doing"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">😴 Hours Slept</div>
+                    <div class="card-value" id="hours-slept"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">💪 Last Workout</div>
+                    <div class="card-value" id="last-workout"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card fort-card">
+                    <div class="card-label">🎮 Can Colin Fort?</div>
+                    <div class="card-value" id="can-fort"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">🥩 Protein Today</div>
+                    <div class="card-value" id="protein"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">🍽️ Last Meal</div>
+                    <div class="card-value" id="last-meal"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">🕹️ Recently Played</div>
+                    <div id="recent-game"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card kirk-card">
+                    <div class="card-label">😐 Days Since Told I Look Like Charlie Kirk</div>
+                    <div class="card-value" id="charlie-kirk"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">🏆 Last Fortnite Dub</div>
+                    <div id="fortnite-dub"><span class="loading">Loading...</span></div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label">🗳️ Poll</div>
+                    <div class="poll-container">
+                        <div style="font-size: 1.1rem; font-weight: 600;">Glizzy or Slider?</div>
+                        <div class="poll-options">
+                            <button class="poll-btn" onclick="vote('glizzy')">Glizzy</button>
+                            <button class="poll-btn" onclick="vote('slider')">Slider</button>
+                        </div>
+                        <div class="poll-results" id="poll-results"></div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="card heart-rate-card">
                 <div class="card-label">❤️ Current Heart Rate</div>
                 <div class="card-sublabel">(if not beating I am charging watch or dead)</div>
                 <iframe src="https://pulsoid.net/widget/view/903a03b6-af65-4b8f-b011-cda39220c5ac" class="pulsoid-widget"></iframe>
             </div>
-            
-            <div class="card status-card">
-                <div class="card-label">🎯 Daily Status</div>
-                <div class="card-value"><span class="status-dot"></span><span id="daily-status"><span class="loading">Loading...</span></span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">👀 Currently Doing</div>
-                <div class="card-value" id="currently-doing"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">😴 Hours Slept</div>
-                <div class="card-value" id="hours-slept"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">💪 Last Workout</div>
-                <div class="card-value" id="last-workout"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card fort-card">
-                <div class="card-label">🎮 Can Colin Fort?</div>
-                <div class="card-value" id="can-fort"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">🥩 Protein Today</div>
-                <div class="card-value" id="protein"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">🍽️ Last Meal</div>
-                <div class="card-value" id="last-meal"><span class="loading">Loading...</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-label">🏆 Last Fortnite Dub</div>
-                <div id="fortnite-dub"><span class="loading">Loading...</span></div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            built different since day one
         </div>
     </div>
     
     <script>
         const greetings = [
-            "yo",
-            "wassup",
-            "greetings traveler",
-            "welcome back",
-            "hey there",
-            "sup",
-            "howdy",
-            "what's good",
-            "ayo",
-            "well well well"
+            "is matt racist?",
+            "Howdy",
+            "Hey pipsqueak",
+            "hey little guy",
+            "Free diddy",
+            "goodboy",
+            "playing fort maybe"
         ];
         
         document.getElementById('greeting').textContent = greetings[Math.floor(Math.random() * greetings.length)];
@@ -230,6 +352,51 @@
         }
         updateTime();
         setInterval(updateTime, 60000);
+        
+        function vote(choice) {
+            localStorage.setItem('poll_vote', choice);
+            let glizzy = parseInt(localStorage.getItem('poll_glizzy') || '0');
+            let slider = parseInt(localStorage.getItem('poll_slider') || '0');
+            
+            if (choice === 'glizzy') glizzy++;
+            else slider++;
+            
+            localStorage.setItem('poll_glizzy', glizzy);
+            localStorage.setItem('poll_slider', slider);
+            
+            updatePollResults();
+            
+            document.querySelectorAll('.poll-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+        
+        function updatePollResults() {
+            const glizzy = parseInt(localStorage.getItem('poll_glizzy') || '0');
+            const slider = parseInt(localStorage.getItem('poll_slider') || '0');
+            const total = glizzy + slider;
+            
+            if (total > 0) {
+                const glizzyPercent = Math.round((glizzy / total) * 100);
+                const sliderPercent = Math.round((slider / total) * 100);
+                
+                document.getElementById('poll-results').innerHTML = `
+                    <div>Glizzy: ${glizzyPercent}% (${glizzy})</div>
+                    <div class="poll-bar"><div class="poll-bar-fill" style="width: ${glizzyPercent}%"></div></div>
+                    <div style="margin-top: 8px;">Slider: ${sliderPercent}% (${slider})</div>
+                    <div class="poll-bar"><div class="poll-bar-fill" style="width: ${sliderPercent}%"></div></div>
+                `;
+            }
+            
+            const userVote = localStorage.getItem('poll_vote');
+            if (userVote) {
+                document.querySelectorAll('.poll-btn').forEach(btn => {
+                    if (btn.textContent.toLowerCase().includes(userVote)) {
+                        btn.classList.add('selected');
+                    }
+                });
+            }
+        }
+        updatePollResults();
         
         async function fetchStatus() {
             try {
@@ -259,6 +426,29 @@
                     
                     document.getElementById('protein').textContent = values[6] || 'Unknown';
                     document.getElementById('last-meal').textContent = values[7] || 'Unknown';
+                    
+                    const gameUrl = values[8] ? values[8].trim() : '';
+                    const gameElement = document.getElementById('recent-game');
+                    if (gameUrl && gameUrl.includes('store.steampowered.com')) {
+                        const appIdMatch = gameUrl.match(/app\/(\d+)/);
+                        if (appIdMatch) {
+                            const appId = appIdMatch[1];
+                            gameElement.innerHTML = `
+                                <div class="game-preview">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" alt="Game">
+                                    <div class="game-preview-info">
+                                        <a href="${gameUrl}" target="_blank" class="game-preview-link">View on Steam →</a>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    } else if (gameUrl) {
+                        gameElement.innerHTML = '<a href="' + gameUrl + '" target="_blank" class="game-preview-link">' + gameUrl + '</a>';
+                    } else {
+                        gameElement.innerHTML = '<span class="no-dub">Nothing rn</span>';
+                    }
+                    
+                    document.getElementById('charlie-kirk').textContent = values[9] || '0';
                 }
             } catch (error) { console.error('Error:', error); }
         }
