@@ -53,7 +53,6 @@
             margin: 0 auto;
         }
         
-        /* Header */
         .header {
             border: 1px solid var(--green-dim);
             padding: 20px;
@@ -121,11 +120,11 @@
             color: var(--text-dim);
         }
         
-        /* Navigation */
         .nav {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
         .nav-btn {
@@ -146,14 +145,12 @@
             background: rgba(0,255,65,0.05);
         }
         
-        /* Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
         
-        /* Panels */
         .panel {
             background: var(--panel);
             border: 1px solid var(--border);
@@ -209,15 +206,6 @@
             text-shadow: 0 0 20px rgba(0,255,65,0.3);
         }
         
-        .panel-value.status-yes {
-            color: var(--green);
-        }
-        
-        .panel-value.status-no {
-            color: var(--red);
-        }
-        
-        /* Heart Rate Panel */
         .heart-panel .panel-content {
             padding: 10px;
         }
@@ -236,7 +224,6 @@
             text-align: center;
         }
         
-        /* Game Preview */
         .game-preview img {
             width: 100%;
             border: 1px solid var(--border);
@@ -255,7 +242,6 @@
             color: var(--green);
         }
         
-        /* Poll */
         .poll-question {
             font-size: 1.1rem;
             margin-bottom: 15px;
@@ -316,7 +302,6 @@
             transition: width 0.5s;
         }
         
-        /* Pictures */
         .pictures-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -336,7 +321,6 @@
             border-color: var(--green);
         }
         
-        /* Videos */
         .video-container {
             position: relative;
             padding-top: 56.25%;
@@ -351,7 +335,6 @@
             border: 1px solid var(--border);
         }
         
-        /* Music */
         .music-player {
             background: #000;
             padding: 15px;
@@ -391,18 +374,11 @@
             filter: invert(1) hue-rotate(180deg);
         }
         
-        /* Dub Image */
-        .dub-image {
-            max-width: 100%;
-            border: 1px solid var(--border);
-        }
-        
         .no-data {
             color: var(--text-dim);
             font-style: italic;
         }
         
-        /* Footer */
         .footer {
             margin-top: 30px;
             padding-top: 20px;
@@ -412,7 +388,6 @@
             font-size: 0.75rem;
         }
         
-        /* Mobile */
         @media (max-width: 600px) {
             .logo { font-size: 1.3rem; }
             .header-top { flex-direction: column; gap: 10px; align-items: flex-start; }
@@ -639,7 +614,7 @@
         // Poll
         function vote(choice) {
             const prevVote = localStorage.getItem('poll_vote');
-            if (prevVote) return; // Already voted
+            if (prevVote) return;
             
             localStorage.setItem('poll_vote', choice);
             let glover = parseInt(localStorage.getItem('poll_glover') || '0');
@@ -714,7 +689,7 @@
                             gameElement.innerHTML = `
                                 <div class="game-preview">
                                     <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" alt="Game">
-                                    <a href="${gameUrl}" target="_blank" class="game-link">VIEW ON STEAM →</a>
+                                    <a href="${gameUrl}" target="_blank" class="game-link">VIEW ON STEAM</a>
                                 </div>
                             `;
                         }
