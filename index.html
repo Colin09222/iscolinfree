@@ -4,332 +4,729 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Is Colin Free?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'VT323', monospace;
             min-height: 100vh;
-            padding: 40px 20px;
-            background: linear-gradient(-45deg, #0f0f0f, #1a1a2e, #16213e, #0f0f0f);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #ffffff;
+            background: #008080;
+            color: #000;
+            overflow-x: hidden;
         }
         
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .container { max-width: 900px; margin: 0 auto; }
-        
-        .greeting {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 8px;
-        }
-        
-        h1 {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 0.85rem;
-        }
-        
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            .heart-rate-card {
-                order: -1;
-            }
-        }
-        
-        .grid { display: grid; gap: 16px; }
-        
-        .card {
-            background: rgba(26, 26, 26, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .card-label {
-            font-size: 0.75rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
+        .desktop {
+            min-height: calc(100vh - 36px);
+            padding: 20px;
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .card-sublabel {
-            font-size: 0.65rem;
-            color: #555;
-            margin-top: 2px;
-            font-style: italic;
-        }
-        
-        .card-value {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        
-        .heart-rate-card {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(60, 30, 30, 0.8) 100%);
-            border-color: rgba(255, 100, 100, 0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-        
-        .fort-card .card-value { color: #4ade80; }
-        .fort-card .card-value.no { color: #f87171; }
-        
-        .pulsoid-widget { width: 100%; height: 180px; border: none; border-radius: 12px; }
-        
-        .dub-image { max-width: 100%; border-radius: 12px; margin-top: 10px; }
-        .no-dub { color: #666; font-style: italic; font-size: 1rem; }
-        
-        .status-card .card-value {
-            display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            align-content: flex-start;
             gap: 10px;
         }
         
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
-            50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
-        }
-        
-        .loading {
-            color: #444;
-            animation: loadingPulse 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-        
-        .time {
-            text-align: center;
-            color: #555;
-            font-size: 0.8rem;
-            margin-bottom: 30px;
-        }
-        
-        .poll-container {
-            margin-top: 16px;
-        }
-        
-        .poll-options {
+        /* Desktop Icons */
+        .desktop-icon {
+            width: 70px;
             display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        
-        .poll-btn {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            border-radius: 10px;
+            flex-direction: column;
+            align-items: center;
             cursor: pointer;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            transition: all 0.2s ease;
+            padding: 5px;
+            text-align: center;
         }
         
-        .poll-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.02);
+        .desktop-icon:hover {
+            background: rgba(0, 0, 128, 0.3);
         }
         
-        .poll-btn.selected {
-            background: rgba(74, 222, 128, 0.2);
-            border-color: #4ade80;
+        .desktop-icon img {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
         }
         
-        .poll-results {
-            margin-top: 12px;
-            font-size: 0.85rem;
-            color: #888;
+        .desktop-icon span {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 4px;
+            text-shadow: 1px 1px #000;
+            word-break: break-word;
+        }
+        
+        /* Windows */
+        .window {
+            position: fixed;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: 2px 2px 0 #000;
+            min-width: 280px;
+            max-width: 95vw;
+            z-index: 10;
+            display: none;
+        }
+        
+        .window.active {
+            display: block;
+        }
+        
+        .window-header {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: #fff;
+            padding: 3px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .window-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .window-btn {
+            width: 18px;
+            height: 18px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+        }
+        
+        .window-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .window-content {
+            padding: 15px;
+            max-height: 60vh;
+            overflow-y: auto;
+            font-size: 18px;
+        }
+        
+        .window-content label {
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .window-content .value {
+            font-size: 22px;
+            margin-top: 5px;
+            padding: 8px;
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: #c0c0c0;
+            border-top: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 2px 4px;
+            gap: 4px;
+            z-index: 100;
+        }
+        
+        .start-btn {
+            height: 28px;
+            padding: 2px 8px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .start-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .start-btn img {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .taskbar-items {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+        }
+        
+        .taskbar-item {
+            height: 28px;
+            padding: 2px 10px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .taskbar-time {
+            padding: 4px 10px;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            font-size: 14px;
+        }
+        
+        /* Special Windows */
+        .heart-rate-display {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            font-size: 36px;
+            text-align: center;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .pulsoid-frame {
+            width: 100%;
+            height: 120px;
+            border: none;
+        }
+        
+        /* Pictures Window */
+        .pictures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        
+        .pictures-grid img {
+            width: 100%;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            cursor: pointer;
+        }
+        
+        /* Music Player */
+        .music-player {
+            background: #000;
+            padding: 10px;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .music-player audio {
+            width: 100%;
+        }
+        
+        .music-visualizer {
+            height: 60px;
+            background: #000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .visualizer-bar {
+            width: 8px;
+            background: #00ff00;
+            animation: visualize 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes visualize {
+            from { height: 10px; }
+            to { height: 50px; }
+        }
+        
+        .visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
+        .visualizer-bar:nth-child(5) { animation-delay: 0.15s; }
+        .visualizer-bar:nth-child(6) { animation-delay: 0.25s; }
+        .visualizer-bar:nth-child(7) { animation-delay: 0.05s; }
+        
+        /* Videos Window */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        /* Poll */
+        .poll-btn {
+            padding: 8px 20px;
+            margin: 5px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .poll-btn:active, .poll-btn.selected {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #a0a0a0;
         }
         
         .poll-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin-top: 8px;
-            overflow: hidden;
+            height: 20px;
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            margin-top: 5px;
         }
         
         .poll-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4ade80, #a5b4fc);
-            border-radius: 4px;
-            transition: width 0.5s ease;
+            background: #000080;
         }
         
-        .game-preview {
-            margin-top: 12px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.3);
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: 36px;
+            left: 0;
+            width: 200px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: none;
+            z-index: 101;
         }
         
-        .game-preview img {
-            width: 100%;
+        .start-menu.active {
             display: block;
         }
         
-        .game-preview-info {
-            padding: 12px;
+        .start-menu-header {
+            background: #000080;
+            color: #fff;
+            padding: 10px;
+            font-size: 20px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30px;
         }
         
-        .game-preview-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 4px;
+        .start-menu-items {
+            margin-left: 30px;
         }
         
-        .game-preview-link {
-            color: #a5b4fc;
-            text-decoration: none;
-            font-size: 0.8rem;
+        .start-menu-item {
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 16px;
         }
         
-        .game-preview-link:hover {
-            text-decoration: underline;
+        .start-menu-item:hover {
+            background: #000080;
+            color: #fff;
         }
         
-        .kirk-card {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(50, 40, 20, 0.8) 100%);
+        .start-menu-item img {
+            width: 24px;
+            height: 24px;
         }
         
-        .kirk-card .card-value {
-            font-size: 2rem;
+        /* Mobile */
+        @media (max-width: 768px) {
+            .desktop {
+                padding: 10px;
+            }
+            
+            .desktop-icon {
+                width: 60px;
+            }
+            
+            .desktop-icon img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .window {
+                width: 95vw !important;
+                left: 2.5vw !important;
+                top: 50px !important;
+                max-height: 80vh;
+            }
+            
+            .window-content {
+                max-height: 50vh;
+            }
+        }
+        
+        /* Greeting */
+        .greeting-window {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .greeting-text {
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="greeting" id="greeting">yo</div>
-        <h1>Is Colin Free?</h1>
-        <div class="subtitle">live status dashboard</div>
-        <div class="time" id="current-time"></div>
+    <div class="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon" onclick="openWindow('status')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23ffff00' x='4' y='4' width='40' height='40'/><rect fill='%23000' x='8' y='8' width='32' height='32'/><text x='24' y='32' text-anchor='middle' fill='%2300ff00' font-size='20'>♥</text></svg>" alt="Status">
+            <span>Daily Status</span>
+        </div>
         
-        <div class="main-layout">
-            <div class="grid">
-                <div class="card status-card">
-                    <div class="card-label">🎯 Daily Status</div>
-                    <div class="card-value"><span class="status-dot"></span><span id="daily-status"><span class="loading">Loading...</span></span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">👀 Currently Doing</div>
-                    <div class="card-value" id="currently-doing"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">😴 Hours Slept</div>
-                    <div class="card-value" id="hours-slept"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">💪 Last Workout</div>
-                    <div class="card-value" id="last-workout"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card fort-card">
-                    <div class="card-label">🎮 Can Colin Fort?</div>
-                    <div class="card-value" id="can-fort"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">🥩 Protein Today</div>
-                    <div class="card-value" id="protein"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">🍽️ Last Meal</div>
-                    <div class="card-value" id="last-meal"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">🕹️ Recently Played</div>
-                    <div id="recent-game"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card kirk-card">
-                    <div class="card-label">😐 Days Since Told I Look Like Charlie Kirk</div>
-                    <div class="card-value" id="charlie-kirk"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">🏆 Last Fortnite Dub</div>
-                    <div id="fortnite-dub"><span class="loading">Loading...</span></div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-label">🗳️ Poll</div>
-                    <div class="poll-container">
-                        <div style="font-size: 1.1rem; font-weight: 600;">Glover or Slider?</div>
-                        <div class="poll-options">
-                            <button class="poll-btn" onclick="vote('glover')">Glover</button>
-                            <button class="poll-btn" onclick="vote('slider')">Slider</button>
-                        </div>
-                        <div class="poll-results" id="poll-results"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card heart-rate-card">
-                <div class="card-label">❤️ Current Heart Rate</div>
-                <div class="card-sublabel">(if not beating I am charging watch or dead)</div>
-                <iframe src="https://pulsoid.net/widget/view/903a03b6-af65-4b8f-b011-cda39220c5ac" class="pulsoid-widget"></iframe>
+        <div class="desktop-icon" onclick="openWindow('doing')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%230000aa' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='24'>👀</text></svg>" alt="Doing">
+            <span>Currently Doing</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('sleep')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23000080' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>😴</text></svg>" alt="Sleep">
+            <span>Hours Slept</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('workout')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23aa0000' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>💪</text></svg>" alt="Workout">
+            <span>Last Workout</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('fort')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%2300aa00' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🎮</text></svg>" alt="Fort">
+            <span>Can Colin Fort?</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('protein')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23aa5500' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🥩</text></svg>" alt="Protein">
+            <span>Protein Today</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('meal')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23ff8800' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🍽️</text></svg>" alt="Meal">
+            <span>Last Meal</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('game')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23440088' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🕹️</text></svg>" alt="Game">
+            <span>Recently Played</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('kirk')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23888800' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>😐</text></svg>" alt="Kirk">
+            <span>Charlie Kirk Counter</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('dub')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23ffd700' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23000' font-size='20'>🏆</text></svg>" alt="Dub">
+            <span>Last Fort Dub</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('heartrate')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23ff0000' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>❤️</text></svg>" alt="Heart">
+            <span>Heart Rate</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('poll')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23008888' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🗳️</text></svg>" alt="Poll">
+            <span>Poll</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('pictures')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%234488ff' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🖼️</text></svg>" alt="Pictures">
+            <span>My Pictures</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('videos')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23ff4444' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23fff' font-size='20'>🎬</text></svg>" alt="Videos">
+            <span>My Videos</span>
+        </div>
+        
+        <div class="desktop-icon" onclick="openWindow('music')">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%2388ff44' x='4' y='4' width='40' height='40'/><text x='24' y='32' text-anchor='middle' fill='%23000' font-size='20'>🎵</text></svg>" alt="Music">
+            <span>Music Player</span>
+        </div>
+    </div>
+    
+    <!-- Windows -->
+    <div class="window" id="window-greeting" style="top: 30%; left: 50%; transform: translateX(-50%);">
+        <div class="window-header">
+            <span class="window-title">Welcome!</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('greeting')">×</button>
             </div>
         </div>
+        <div class="window-content">
+            <div class="greeting-text" id="greeting-text">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-status" style="top: 80px; left: 50px;">
+        <div class="window-header">
+            <span class="window-title">Daily Status</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('status')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="daily-status">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-doing" style="top: 100px; left: 80px;">
+        <div class="window-header">
+            <span class="window-title">Currently Doing</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('doing')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="currently-doing">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-sleep" style="top: 120px; left: 110px;">
+        <div class="window-header">
+            <span class="window-title">Hours Slept</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('sleep')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="hours-slept">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-workout" style="top: 140px; left: 140px;">
+        <div class="window-header">
+            <span class="window-title">Last Workout</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('workout')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="last-workout">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-fort" style="top: 160px; left: 170px;">
+        <div class="window-header">
+            <span class="window-title">Can Colin Fort?</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('fort')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="can-fort" style="font-size: 32px; text-align: center;">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-protein" style="top: 180px; left: 200px;">
+        <div class="window-header">
+            <span class="window-title">Protein Today</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('protein')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="protein">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-meal" style="top: 200px; left: 230px;">
+        <div class="window-header">
+            <span class="window-title">Last Meal</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('meal')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="value" id="last-meal">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-game" style="top: 220px; left: 260px;">
+        <div class="window-header">
+            <span class="window-title">Recently Played</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('game')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div id="recent-game">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-kirk" style="top: 240px; left: 290px;">
+        <div class="window-header">
+            <span class="window-title">Charlie Kirk Counter</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('kirk')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <label>Days since told I look like Charlie Kirk:</label>
+            <div class="value" id="charlie-kirk" style="font-size: 48px; text-align: center;">0</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-dub" style="top: 260px; left: 320px;">
+        <div class="window-header">
+            <span class="window-title">Last Fortnite Dub</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('dub')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div id="fortnite-dub">No dub yet</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-heartrate" style="top: 80px; left: 400px;">
+        <div class="window-header">
+            <span class="window-title">Heart Rate Monitor</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('heartrate')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">(if not beating I am charging watch or dead)</p>
+            <iframe src="https://pulsoid.net/widget/view/903a03b6-af65-4b8f-b011-cda39220c5ac" class="pulsoid-frame"></iframe>
+        </div>
+    </div>
+    
+    <div class="window" id="window-poll" style="top: 150px; left: 450px;">
+        <div class="window-header">
+            <span class="window-title">Poll</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('poll')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <label style="font-size: 20px;">Glover or Slider?</label>
+            <div style="margin-top: 15px;">
+                <button class="poll-btn" onclick="vote('glover')">Glover</button>
+                <button class="poll-btn" onclick="vote('slider')">Slider</button>
+            </div>
+            <div id="poll-results" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-pictures" style="top: 100px; left: 300px; width: 400px;">
+        <div class="window-header">
+            <span class="window-title">My Pictures</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('pictures')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="pictures-grid" id="pictures-grid">No pictures yet</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-videos" style="top: 120px; left: 350px; width: 450px;">
+        <div class="window-header">
+            <span class="window-title">My Videos</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('videos')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div id="video-container">No videos yet</div>
+        </div>
+    </div>
+    
+    <div class="window" id="window-music" style="top: 200px; left: 400px; width: 320px;">
+        <div class="window-header">
+            <span class="window-title">Music Player</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="closeWindow('music')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="music-player">
+                <div class="music-visualizer">
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                </div>
+                <audio controls id="music-audio" style="width: 100%;">
+                    <source src="" type="audio/mpeg">
+                </audio>
+            </div>
+            <p id="music-status" style="margin-top: 10px; color: #666;">No music loaded</p>
+        </div>
+    </div>
+    
+    <!-- Start Menu -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">Colin98</div>
+        <div class="start-menu-items">
+            <div class="start-menu-item" onclick="openWindow('status')">📊 Daily Status</div>
+            <div class="start-menu-item" onclick="openWindow('heartrate')">❤️ Heart Rate</div>
+            <div class="start-menu-item" onclick="openWindow('pictures')">🖼️ My Pictures</div>
+            <div class="start-menu-item" onclick="openWindow('videos')">🎬 My Videos</div>
+            <div class="start-menu-item" onclick="openWindow('music')">🎵 Music Player</div>
+            <div class="start-menu-item" onclick="openWindow('poll')">🗳️ Poll</div>
+        </div>
+    </div>
+    
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <button class="start-btn" onclick="toggleStartMenu()">
+            <span>▶ Start</span>
+        </button>
+        <div class="taskbar-items" id="taskbar-items"></div>
+        <div class="taskbar-time" id="taskbar-time"></div>
     </div>
     
     <script>
@@ -343,16 +740,39 @@
             "playing fort maybe"
         ];
         
-        document.getElementById('greeting').textContent = greetings[Math.floor(Math.random() * greetings.length)];
+        // Show greeting on load
+        document.getElementById('greeting-text').textContent = greetings[Math.floor(Math.random() * greetings.length)];
+        document.getElementById('window-greeting').classList.add('active');
         
+        function openWindow(name) {
+            document.getElementById('window-' + name).classList.add('active');
+            document.getElementById('start-menu').classList.remove('active');
+        }
+        
+        function closeWindow(name) {
+            document.getElementById('window-' + name).classList.remove('active');
+        }
+        
+        function toggleStartMenu() {
+            document.getElementById('start-menu').classList.toggle('active');
+        }
+        
+        // Close start menu when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.start-btn') && !e.target.closest('.start-menu')) {
+                document.getElementById('start-menu').classList.remove('active');
+            }
+        });
+        
+        // Time
         function updateTime() {
             const now = new Date();
-            const options = { weekday: 'long', hour: 'numeric', minute: '2-digit', hour12: true };
-            document.getElementById('current-time').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('taskbar-time').textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         }
         updateTime();
-        setInterval(updateTime, 60000);
+        setInterval(updateTime, 1000);
         
+        // Poll
         function vote(choice) {
             localStorage.setItem('poll_vote', choice);
             let glover = parseInt(localStorage.getItem('poll_glover') || '0');
@@ -398,6 +818,7 @@
         }
         updatePollResults();
         
+        // Fetch data
         async function fetchStatus() {
             try {
                 const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSj0ZT3c560TunALL_hmI1kEo0nDrikhz9ayKDuvJyhGF9_iZATLlQPrqfZqrv80Jc0Iw1Nr6Zo2ohB/pub?output=csv');
@@ -405,6 +826,7 @@
                 const lines = csv.split('\n');
                 if (lines.length >= 2) {
                     const values = lines[1].split(',');
+                    
                     document.getElementById('currently-doing').textContent = values[0] || 'Unknown';
                     document.getElementById('hours-slept').textContent = values[1] || 'Unknown';
                     document.getElementById('last-workout').textContent = values[2] || 'Unknown';
@@ -412,21 +834,22 @@
                     const canFort = values[3] || 'Unknown';
                     const fortElement = document.getElementById('can-fort');
                     fortElement.textContent = canFort;
-                    if (canFort.toLowerCase().includes('no')) { fortElement.classList.add('no'); }
+                    fortElement.style.color = canFort.toLowerCase().includes('no') ? '#ff0000' : '#00aa00';
                     
                     document.getElementById('daily-status').textContent = values[4] || 'Unknown';
                     
                     const dubUrl = values[5] ? values[5].trim() : '';
                     const dubElement = document.getElementById('fortnite-dub');
                     if (dubUrl && dubUrl.startsWith('http')) {
-                        dubElement.innerHTML = '<img src="' + dubUrl + '" class="dub-image" alt="Last Fortnite Dub">';
+                        dubElement.innerHTML = '<img src="' + dubUrl + '" style="max-width: 100%; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080;">';
                     } else {
-                        dubElement.innerHTML = '<span class="no-dub">' + (dubUrl || 'No dub yet') + '</span>';
+                        dubElement.textContent = dubUrl || 'No dub yet';
                     }
                     
                     document.getElementById('protein').textContent = values[6] || 'Unknown';
                     document.getElementById('last-meal').textContent = values[7] || 'Unknown';
                     
+                    // Recent game
                     const gameUrl = values[8] ? values[8].trim() : '';
                     const gameElement = document.getElementById('recent-game');
                     if (gameUrl && gameUrl.includes('store.steampowered.com')) {
@@ -434,26 +857,78 @@
                         if (appIdMatch) {
                             const appId = appIdMatch[1];
                             gameElement.innerHTML = `
-                                <div class="game-preview">
-                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" alt="Game">
-                                    <div class="game-preview-info">
-                                        <a href="${gameUrl}" target="_blank" class="game-preview-link">View on Steam →</a>
-                                    </div>
-                                </div>
+                                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" style="max-width: 100%; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080;">
+                                <p style="margin-top: 10px;"><a href="${gameUrl}" target="_blank" style="color: #0000aa;">View on Steam</a></p>
                             `;
                         }
-                    } else if (gameUrl) {
-                        gameElement.innerHTML = '<a href="' + gameUrl + '" target="_blank" class="game-preview-link">' + gameUrl + '</a>';
                     } else {
-                        gameElement.innerHTML = '<span class="no-dub">Nothing rn</span>';
+                        gameElement.textContent = gameUrl || 'Nothing rn';
                     }
                     
                     document.getElementById('charlie-kirk').textContent = values[9] || '0';
+                    
+                    // Pictures (column 11 / index 10)
+                    const picturesStr = values[10] ? values[10].trim() : '';
+                    const picturesGrid = document.getElementById('pictures-grid');
+                    if (picturesStr) {
+                        const pics = picturesStr.split('|');
+                        picturesGrid.innerHTML = pics.map(url => `<img src="${url.trim()}" onclick="window.open('${url.trim()}', '_blank')">`).join('');
+                    } else {
+                        picturesGrid.textContent = 'No pictures yet';
+                    }
+                    
+                    // Videos (column 12 / index 11)
+                    const videoUrl = values[11] ? values[11].trim() : '';
+                    const videoContainer = document.getElementById('video-container');
+                    if (videoUrl && videoUrl.includes('youtube.com')) {
+                        const videoId = videoUrl.match(/(?:v=|youtu\.be\/)([^&]+)/);
+                        if (videoId) {
+                            videoContainer.innerHTML = `<div class="video-container"><iframe src="https://www.youtube.com/embed/${videoId[1]}" allowfullscreen></iframe></div>`;
+                        }
+                    } else if (videoUrl) {
+                        videoContainer.innerHTML = `<video controls style="width: 100%;"><source src="${videoUrl}" type="video/mp4"></video>`;
+                    } else {
+                        videoContainer.textContent = 'No videos yet';
+                    }
+                    
+                    // Music (column 13 / index 12)
+                    const musicUrl = values[12] ? values[12].trim() : '';
+                    if (musicUrl) {
+                        document.getElementById('music-audio').src = musicUrl;
+                        document.getElementById('music-status').textContent = 'Music loaded - click play!';
+                    }
                 }
-            } catch (error) { console.error('Error:', error); }
+            } catch (error) { 
+                console.error('Error:', error);
+            }
         }
         fetchStatus();
         setInterval(fetchStatus, 300000);
+        
+        // Make windows draggable
+        document.querySelectorAll('.window-header').forEach(header => {
+            header.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('window-btn')) return;
+                
+                const window = this.parentElement;
+                const startX = e.clientX - window.offsetLeft;
+                const startY = e.clientY - window.offsetTop;
+                
+                function onMouseMove(e) {
+                    window.style.left = (e.clientX - startX) + 'px';
+                    window.style.top = (e.clientY - startY) + 'px';
+                    window.style.transform = 'none';
+                }
+                
+                function onMouseUp() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+        });
     </script>
 </body>
 </html>
