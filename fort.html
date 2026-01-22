@@ -231,12 +231,39 @@
             font-style: italic;
         }
         
-        .epic-name {
-            text-align: center;
-            padding: 10px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            padding: 20px;
             background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
-            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(0,255,65,0.3);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+        
+        .epic-name {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--amber);
+            margin-bottom: 20px;
         }
         
         .epic-label {
@@ -248,40 +275,25 @@
         .epic-value {
             font-family: 'Orbitron', sans-serif;
             color: var(--amber);
-            font-size: 1.1rem;
-            margin-top: 3px;
-        }
-        
-        .tracker-embed {
-            width: 100%;
-            border: 1px solid var(--border);
-            background: #000;
-            margin-top: 15px;
+            font-size: 1.3rem;
+            margin-top: 5px;
         }
         
         .tracker-link {
             display: block;
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 12px;
             text-align: center;
-            color: var(--green);
+            color: var(--text-dim);
             text-decoration: none;
-            border: 1px solid var(--green-dim);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
             transition: all 0.2s;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
         }
         
         .tracker-link:hover {
-            background: var(--green);
-            color: #000;
-        }
-        
-        .stats-note {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.75rem;
-            margin-top: 10px;
+            border-color: var(--green);
+            color: var(--green);
         }
         
         .footer {
@@ -298,6 +310,8 @@
             .header-top { flex-direction: column; gap: 10px; align-items: flex-start; }
             .grid { grid-template-columns: 1fr; }
             .panel-value.mega { font-size: 3rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 2rem; }
         }
     </style>
 </head>
@@ -336,10 +350,10 @@
             </div>
             
             <!-- Player Stats -->
-            <div class="panel">
+            <div class="panel" style="grid-column: 1 / -1;">
                 <div class="panel-header">
-                    <span class="panel-title">Player Stats</span>
-                    <span class="panel-status">FORTNITE TRACKER</span>
+                    <span class="panel-title">Lifetime Stats</span>
+                    <span class="panel-status">FORTNITE</span>
                 </div>
                 <div class="panel-content">
                     <div class="epic-name">
@@ -347,9 +361,26 @@
                         <div class="epic-value">Eaststroudsburg</div>
                     </div>
                     
-                    <a href="https://fortnitetracker.com/profile/all/Eaststroudsburg" target="_blank" class="tracker-link">VIEW LIVE STATS ON FORTNITE TRACKER</a>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-wins">--</div>
+                            <div class="stat-label">VICTORIES</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-kd">--</div>
+                            <div class="stat-label">K/D RATIO</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-kills">--</div>
+                            <div class="stat-label">ELIMINATIONS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-matches">--</div>
+                            <div class="stat-label">MATCHES</div>
+                        </div>
+                    </div>
                     
-                    <div class="stats-note">Click above to see wins, K/D, matches, and recent games</div>
+                    <a href="https://fortnitetracker.com/profile/all/Eaststroudsburg" target="_blank" class="tracker-link">VIEW FULL PROFILE ON FORTNITE TRACKER →</a>
                 </div>
             </div>
             
@@ -357,7 +388,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <span class="panel-title">Last Fortnite Dub</span>
-                    <span class="panel-status">VICTORY</span>
+                    <span class="panel-status">VICTORY ROYALE</span>
                 </div>
                 <div class="panel-content">
                     <div id="fortnite-dub"><span class="no-data">NO DUB YET</span></div>
@@ -416,9 +447,20 @@
                     } else {
                         dubElement.innerHTML = '<span class="no-data">' + (dubUrl || 'NO DUB YET') + '</span>';
                     }
+                    
+                    // Fort stats (columns N=13, O=14, P=15, Q=16)
+                    document.getElementById('stat-wins').textContent = values[13] || '109';
+                    document.getElementById('stat-kd').textContent = values[14] || '1.04';
+                    document.getElementById('stat-kills').textContent = values[15] || '4,521';
+                    document.getElementById('stat-matches').textContent = values[16] || '4,298';
                 }
             } catch (error) { 
                 console.error('Error:', error);
+                // Fallback stats from your tracker
+                document.getElementById('stat-wins').textContent = '109';
+                document.getElementById('stat-kd').textContent = '1.04';
+                document.getElementById('stat-kills').textContent = '4,521';
+                document.getElementById('stat-matches').textContent = '4,298';
             }
         }
         
