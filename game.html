@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLIN // FORT STATUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0a;
+            --panel: #111;
+            --border: #1a1a1a;
+            --green: #00ff41;
+            --green-dim: #00aa2a;
+            --red: #ff3333;
+            --amber: #ffaa00;
+            --text: #cccccc;
+            --text-dim: #666;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                radial-gradient(ellipse at top, #0a1a0a 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            border: 1px solid var(--green-dim);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(0,255,65,0.03) 0%, transparent 100%);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(0,255,65,0.5);
+            letter-spacing: 3px;
+        }
+        
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--green);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--green);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .header-sub {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        
+        .datetime {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            border-color: var(--green);
+            color: var(--green);
+            background: rgba(0,255,65,0.05);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+            opacity: 0.5;
+        }
+        
+        .panel-header {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .panel-status {
+            font-size: 0.65rem;
+            color: var(--green-dim);
+        }
+        
+        .panel-content {
+            padding: 20px 15px;
+        }
+        
+        .panel-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            word-break: break-word;
+        }
+        
+        .panel-value.large {
+            font-size: 2.5rem;
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(0,255,65,0.3);
+        }
+        
+        .panel-value.mega {
+            font-size: 4rem;
+            text-align: center;
+        }
+        
+        .panel-value.status-yes {
+            color: var(--green);
+        }
+        
+        .panel-value.status-no {
+            color: var(--red);
+        }
+        
+        .can-fort-panel {
+            grid-column: 1 / -1;
+        }
+        
+        .can-fort-panel .panel-content {
+            padding: 40px 20px;
+        }
+        
+        .dub-image {
+            max-width: 100%;
+            border: 1px solid var(--border);
+        }
+        
+        .no-data {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--green);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .match-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .match-item {
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .match-result {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        .match-result.win {
+            color: var(--green);
+        }
+        
+        .match-result.loss {
+            color: var(--text-dim);
+        }
+        
+        .match-details {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        
+        .match-kills {
+            color: var(--amber);
+        }
+        
+        .last-seen {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0,255,65,0.05);
+            border: 1px solid var(--green-dim);
+            margin-bottom: 15px;
+        }
+        
+        .last-seen-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+        
+        .last-seen-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--green);
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .logo { font-size: 1.3rem; }
+            .header-top { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .grid { grid-template-columns: 1fr; }
+            .panel-value.mega { font-size: 3rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">COLIN // FORT</div>
+                <div class="status-live">
+                    <span class="live-dot"></span>
+                    LIVE
+                </div>
+            </div>
+            <div class="header-sub">FORTNITE OPERATIONS CENTER</div>
+            <div class="datetime" id="datetime"></div>
+        </header>
+        
+        <nav class="nav">
+            <a href="index.html" class="nav-btn">STATUS</a>
+            <a href="fort.html" class="nav-btn active">FORT?</a>
+        </nav>
+        
+        <div class="grid">
+            <!-- Can Colin Fort? -->
+            <div class="panel can-fort-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Can Colin Fort?</span>
+                    <span class="panel-status">PRIMARY STATUS</span>
+                </div>
+                <div class="panel-content">
+                    <div class="panel-value mega" id="can-fort">--</div>
+                </div>
+            </div>
+            
+            <!-- Last Seen Playing -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Last Seen Playing</span>
+                    <span class="panel-status">TRACKER</span>
+                </div>
+                <div class="panel-content">
+                    <div class="last-seen">
+                        <div class="last-seen-label">LAST MATCH</div>
+                        <div class="last-seen-value" id="last-seen">CHECKING...</div>
+                    </div>
+                    <div class="no-data" style="font-size: 0.75rem; text-align: center;">Data from Fortnite Tracker</div>
+                </div>
+            </div>
+            
+            <!-- Player Stats -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Player Stats</span>
+                    <span class="panel-status">LIFETIME</span>
+                </div>
+                <div class="panel-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-wins">--</div>
+                            <div class="stat-label">WINS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-kd">--</div>
+                            <div class="stat-label">K/D</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-matches">--</div>
+                            <div class="stat-label">MATCHES</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Matches -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Recent Matches</span>
+                    <span class="panel-status">HISTORY</span>
+                </div>
+                <div class="panel-content">
+                    <div class="match-list" id="match-list">
+                        <div class="no-data">LOADING MATCH DATA...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Last Fortnite Dub -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Last Fortnite Dub</span>
+                    <span class="panel-status">VICTORY</span>
+                </div>
+                <div class="panel-content">
+                    <div id="fortnite-dub"><span class="no-data">NO DUB YET</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            FORTNITE TRACKER // EPIC: EASTSTROUDSBURG // DATA REFRESHES EVERY 5 MIN
+        </footer>
+    </div>
+    
+    <script>
+        // DateTime
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options).toUpperCase();
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Fetch sheet data
+        async function fetchStatus() {
+            try {
+                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSj0ZT3c560TunALL_hmI1kEo0nDrikhz9ayKDuvJyhGF9_iZATLlQPrqfZqrv80Jc0Iw1Nr6Zo2ohB/pub?output=csv');
+                const csv = await response.text();
+                const lines = csv.split('\n');
+                if (lines.length >= 2) {
+                    const values = lines[1].split(',');
+                    
+                    // Can Colin Fort?
+                    const canFort = values[3] || '--';
+                    const fortElement = document.getElementById('can-fort');
+                    fortElement.textContent = canFort;
+                    if (canFort.toLowerCase().includes('yes')) {
+                        fortElement.classList.add('status-yes');
+                    } else if (canFort.toLowerCase().includes('no')) {
+                        fortElement.classList.add('status-no');
+                    }
+                    
+                    // Last Dub
+                    const dubUrl = values[5] ? values[5].trim() : '';
+                    const dubElement = document.getElementById('fortnite-dub');
+                    if (dubUrl && dubUrl.startsWith('http')) {
+                        dubElement.innerHTML = '<img src="' + dubUrl + '" class="dub-image" alt="Last Dub">';
+                    } else {
+                        dubElement.innerHTML = '<span class="no-data">' + (dubUrl || 'NO DUB YET') + '</span>';
+                    }
+                }
+            } catch (error) { 
+                console.error('Error:', error);
+            }
+        }
+        fetchStatus();
+        setInterval(fetchStatus, 300000);
+        
+        // Fortnite Tracker - using fortnite-api.com (free, no key needed for basic stats)
+        async function fetchFortniteStats() {
+            try {
+                // Using fortnite-api.com - free tier
+                const response = await fetch('https://fortnite-api.com/v2/stats/br/v2?name=Eaststroudsburg&accountType=epic');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.data) {
+                        const stats = data.data.stats.all.overall;
+                        
+                        document.getElementById('stat-wins').textContent = stats.wins || '0';
+                        document.getElementById('stat-kd').textContent = stats.kd ? stats.kd.toFixed(2) : '0.00';
+                        document.getElementById('stat-matches').textContent = stats.matches || '0';
+                        
+                        // Last seen - estimate based on if data is fresh
+                        document.getElementById('last-seen').textContent = 'STATS LOADED';
+                    }
+                } else {
+                    document.getElementById('last-seen').textContent = 'PRIVATE OR NOT FOUND';
+                    document.getElementById('match-list').innerHTML = '<div class="no-data">STATS MAY BE PRIVATE</div>';
+                }
+            } catch (error) {
+                console.error('Fortnite API error:', error);
+                document.getElementById('last-seen').textContent = 'API ERROR';
+            }
+        }
+        fetchFortniteStats();
+        
+        // Note: Recent matches require a paid API, so we'll show placeholder
+        document.getElementById('match-list').innerHTML = `
+            <div class="no-data" style="text-align: center;">
+                RECENT MATCH HISTORY<br>
+                <span style="font-size: 0.7rem;">Requires Fortnite Tracker API access</span>
+            </div>
+        `;
+    </script>
+</body>
+</html>
