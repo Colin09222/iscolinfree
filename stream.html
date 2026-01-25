@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLIN // LIVE DESKTOP VIEW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0a;
+            --panel: #111;
+            --border: #1a1a1a;
+            --green: #00ff41;
+            --green-dim: #00aa2a;
+            --text: #cccccc;
+            --text-dim: #666;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 15px;
+            background-image: 
+                radial-gradient(ellipse at top, #0a1a0a 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            border: 1px solid var(--green-dim);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(0,255,65,0.03) 0%, transparent 100%);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(0,255,65,0.5);
+            letter-spacing: 3px;
+        }
+        
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--green);
+        }
+        
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            border-color: var(--green);
+            color: var(--green);
+            background: rgba(0,255,65,0.05);
+        }
+        
+        .stream-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 15px;
+            height: calc(100vh - 180px);
+            min-height: 500px;
+        }
+        
+        .stream-panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stream-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+            opacity: 0.5;
+        }
+        
+        .panel-header {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .panel-title {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .panel-title .highlight {
+            color: var(--green);
+        }
+        
+        .panel-status {
+            font-size: 0.65rem;
+            color: var(--green-dim);
+        }
+        
+        .stream-container {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        
+        .stream-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #000;
+        }
+        
+        .chat-message {
+            padding: 8px 10px;
+            background: rgba(0,255,65,0.05);
+            border-left: 2px solid var(--green-dim);
+            word-wrap: break-word;
+        }
+        
+        .chat-message .username {
+            color: var(--green);
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+        
+        .chat-message .text {
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+        
+        .chat-message .time {
+            color: var(--text-dim);
+            font-size: 0.65rem;
+            margin-top: 4px;
+        }
+        
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid var(--border);
+            background: var(--panel);
+        }
+        
+        .username-input {
+            width: 100%;
+            padding: 8px 10px;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        
+        .username-input:focus {
+            outline: none;
+            border-color: var(--green-dim);
+        }
+        
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--green-dim);
+        }
+        
+        .chat-send {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--green-dim);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .chat-send:hover {
+            background: var(--green);
+            color: #000;
+        }
+        
+        .chat-notice {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        /* Cignetti Button */
+        .cignetti-btn {
+            margin-top: 10px;
+            padding: 12px;
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+            border: 2px solid gold;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        .cignetti-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .cignetti-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Spam Overlay */
+        #cignetti-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow: hidden;
+        }
+        
+        .spam-img {
+            position: absolute;
+            width: 180px;
+            border: 4px solid gold;
+            border-radius: 8px;
+            animation: popIn 0.3s ease-out forwards;
+        }
+        
+        .spam-text {
+            position: absolute;
+            font-family: 'Orbitron', sans-serif;
+            color: gold;
+            text-shadow: 0 0 15px gold, 0 0 30px orange;
+            animation: popIn 0.3s ease-out forwards;
+            white-space: nowrap;
+        }
+        
+        @keyframes popIn {
+            from { transform: scale(0) rotate(-20deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        #close-spam {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            background: gold;
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 2001;
+            display: none;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 900px) {
+            .stream-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .stream-container {
+                min-height: 300px;
+            }
+            
+            .chat-panel {
+                height: 400px;
+            }
+            
+            .logo { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">COLIN // LIVE</div>
+                <div class="status-live">
+                    <span class="live-dot"></span>
+                    LIVE DESKTOP VIEW
+                </div>
+            </div>
+        </header>
+        
+        <nav class="nav">
+            <a href="index.html" class="nav-btn">STATUS</a>
+            <a href="fort.html" class="nav-btn">FORT?</a>
+            <a href="game.html" class="nav-btn">GAME</a>
+            <a href="stream.html" class="nav-btn active">LIVE</a>
+        </nav>
+        
+        <div class="stream-layout">
+            <!-- Stream -->
+            <div class="stream-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Desktop Stream // <span class="highlight">flying matt safely to dc</span></span>
+                    <span class="panel-status">LIVE FEED</span>
+                </div>
+                <div class="stream-container">
+                    <iframe 
+                        src="https://player.kick.com/eaststroudsburg" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            
+            <!-- Chat -->
+            <div class="stream-panel chat-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Live Chat</span>
+                    <span class="panel-status">LOCAL</span>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-message">
+                        <div class="username">SYSTEM</div>
+                        <div class="text">Welcome to the stream chat. No account needed.</div>
+                        <div class="time">--:--</div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="username-input" id="username-input" placeholder="Enter nickname..." maxlength="20">
+                    <div class="chat-input-row">
+                        <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." maxlength="200">
+                        <button class="chat-send" id="chat-send">SEND</button>
+                    </div>
+                    <div class="chat-notice">Chat is stored locally - refresh clears history</div>
+                    
+                    <!-- Cignetti Button -->
+                    <button class="cignetti-btn" id="cignetti-btn">🏆 CIGNETTI TYPE SHIT!! 🏆</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cignetti Spam Overlay -->
+    <div id="cignetti-overlay"></div>
+    <button id="close-spam">CLOSE</button>
+    
+    <script>
+        // Chat functionality
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const usernameInput = document.getElementById('username-input');
+        const chatSend = document.getElementById('chat-send');
+        
+        const savedUsername = localStorage.getItem('stream_username');
+        if (savedUsername) {
+            usernameInput.value = savedUsername;
+        }
+        
+        function getTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        }
+        
+        function addMessage(username, text) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-message';
+            msg.innerHTML = `
+                <div class="username">${username}</div>
+                <div class="text">${text}</div>
+                <div class="time">${getTime()}</div>
+            `;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            let username = usernameInput.value.trim();
+            
+            if (!text) return;
+            
+            if (!username) {
+                username = 'Anon' + Math.floor(Math.random() * 9999);
+                usernameInput.value = username;
+            }
+            
+            localStorage.setItem('stream_username', username);
+            addMessage(username, text);
+            chatInput.value = '';
+        }
+        
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        usernameInput.addEventListener('change', () => {
+            localStorage.setItem('stream_username', usernameInput.value.trim());
+        });
+        
+        // Cignetti Spam Button
+        const cignettiBtnEl = document.getElementById('cignetti-btn');
+        const cignettiOverlay = document.getElementById('cignetti-overlay');
+        const closeSpamBtn = document.getElementById('close-spam');
+        
+        cignettiBtnEl.addEventListener('click', () => {
+            cignettiOverlay.style.display = 'block';
+            cignettiOverlay.innerHTML = '';
+            closeSpamBtn.style.display = 'block';
+            
+            // Spam images and text
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const img = document.createElement('img');
+                    img.src = 'https://i.imgur.com/w5P8pYn.jpeg';
+                    img.className = 'spam-img';
+                    img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+                    img.style.top = Math.random() * (window.innerHeight - 180) + 'px';
+                    cignettiOverlay.appendChild(img);
+                    
+                    const txt = document.createElement('div');
+                    txt.className = 'spam-text';
+                    txt.textContent = 'Cignetti type shit!!';
+                    txt.style.left = Math.random() * (window.innerWidth - 250) + 'px';
+                    txt.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                    txt.style.fontSize = (Math.random() * 1.8 + 1.2) + 'rem';
+                    cignettiOverlay.appendChild(txt);
+                }, i * 80);
+            }
+        });
+        
+        closeSpamBtn.addEventListener('click', () => {
+            cignettiOverlay.style.display = 'none';
+            cignettiOverlay.innerHTML = '';
+            closeSpamBtn.style.display = 'none';
+        });
+        
+        // Also close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && cignettiOverlay.style.display === 'block') {
+                cignettiOverlay.style.display = 'none';
+                cignettiOverlay.innerHTML = '';
+                closeSpamBtn.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
