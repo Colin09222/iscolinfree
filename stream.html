@@ -133,7 +133,7 @@
         
         .stream-layout {
             display: grid;
-            grid-template-columns: 1fr 350px;
+            grid-template-columns: 1fr 380px;
             gap: 15px;
             height: calc(100vh - 180px);
             min-height: 500px;
@@ -204,109 +204,25 @@
             flex-direction: column;
         }
         
-        .chat-messages {
+        .chat-container {
             flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
             background: #000;
         }
         
-        .chat-message {
-            padding: 8px 10px;
-            background: rgba(0,255,65,0.05);
-            border-left: 2px solid var(--green-dim);
-            word-wrap: break-word;
+        .chat-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         
-        .chat-message .username {
-            color: var(--green);
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 3px;
-        }
-        
-        .chat-message .text {
-            color: var(--text);
-            font-size: 0.85rem;
-        }
-        
-        .chat-message .time {
-            color: var(--text-dim);
-            font-size: 0.65rem;
-            margin-top: 4px;
-        }
-        
-        .chat-input-area {
+        .cignetti-area {
             padding: 10px;
             border-top: 1px solid var(--border);
             background: var(--panel);
         }
         
-        .username-input {
-            width: 100%;
-            padding: 8px 10px;
-            background: #000;
-            border: 1px solid var(--border);
-            color: var(--green);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-        
-        .username-input:focus {
-            outline: none;
-            border-color: var(--green-dim);
-        }
-        
-        .chat-input-row {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .chat-input {
-            flex: 1;
-            padding: 10px;
-            background: #000;
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-        }
-        
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--green-dim);
-        }
-        
-        .chat-send {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--green-dim);
-            color: var(--green);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .chat-send:hover {
-            background: var(--green);
-            color: #000;
-        }
-        
-        .chat-notice {
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            margin-top: 8px;
-            text-align: center;
-        }
-        
         /* Cignetti Button */
         .cignetti-btn {
-            margin-top: 10px;
             padding: 12px;
             background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
             border: 2px solid gold;
@@ -393,7 +309,7 @@
             }
             
             .chat-panel {
-                height: 400px;
+                height: 450px;
             }
             
             .logo { font-size: 1.2rem; }
@@ -440,24 +356,12 @@
             <div class="stream-panel chat-panel">
                 <div class="panel-header">
                     <span class="panel-title">Live Chat</span>
-                    <span class="panel-status">LOCAL</span>
+                    <span class="panel-status">SHARED</span>
                 </div>
-                <div class="chat-messages" id="chat-messages">
-                    <div class="chat-message">
-                        <div class="username">SYSTEM</div>
-                        <div class="text">Welcome to the stream chat. No account needed.</div>
-                        <div class="time">--:--</div>
-                    </div>
+                <div class="chat-container">
+                    <iframe src="https://tlk.io/colinfly" frameborder="0"></iframe>
                 </div>
-                <div class="chat-input-area">
-                    <input type="text" class="username-input" id="username-input" placeholder="Enter nickname..." maxlength="20">
-                    <div class="chat-input-row">
-                        <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." maxlength="200">
-                        <button class="chat-send" id="chat-send">SEND</button>
-                    </div>
-                    <div class="chat-notice">Chat is stored locally - refresh clears history</div>
-                    
-                    <!-- Cignetti Button -->
+                <div class="cignetti-area">
                     <button class="cignetti-btn" id="cignetti-btn">🏆 CIGNETTI TYPE SHIT!! 🏆</button>
                 </div>
             </div>
@@ -469,59 +373,6 @@
     <button id="close-spam">CLOSE</button>
     
     <script>
-        // Chat functionality
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
-        const usernameInput = document.getElementById('username-input');
-        const chatSend = document.getElementById('chat-send');
-        
-        const savedUsername = localStorage.getItem('stream_username');
-        if (savedUsername) {
-            usernameInput.value = savedUsername;
-        }
-        
-        function getTime() {
-            const now = new Date();
-            return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-        }
-        
-        function addMessage(username, text) {
-            const msg = document.createElement('div');
-            msg.className = 'chat-message';
-            msg.innerHTML = `
-                <div class="username">${username}</div>
-                <div class="text">${text}</div>
-                <div class="time">${getTime()}</div>
-            `;
-            chatMessages.appendChild(msg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        function sendMessage() {
-            const text = chatInput.value.trim();
-            let username = usernameInput.value.trim();
-            
-            if (!text) return;
-            
-            if (!username) {
-                username = 'Anon' + Math.floor(Math.random() * 9999);
-                usernameInput.value = username;
-            }
-            
-            localStorage.setItem('stream_username', username);
-            addMessage(username, text);
-            chatInput.value = '';
-        }
-        
-        chatSend.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-        
-        usernameInput.addEventListener('change', () => {
-            localStorage.setItem('stream_username', usernameInput.value.trim());
-        });
-        
         // Cignetti Spam Button
         const cignettiBtnEl = document.getElementById('cignetti-btn');
         const cignettiOverlay = document.getElementById('cignetti-overlay');
