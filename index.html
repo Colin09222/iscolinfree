@@ -755,8 +755,10 @@
         
         // Ask Colin for Update function
         function askColinForUpdate(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             
             const statusDiv = document.getElementById('update-status');
             const btn = document.getElementById('update-request-btn');
@@ -764,6 +766,16 @@
             // Visual feedback
             btn.style.background = 'rgba(0,255,65,0.3)';
             statusDiv.textContent = 'Pinging Colin... 🐾';
+            
+            // Ping using requestbin - generates a unique ID each time
+            const timestamp = Date.now();
+            const pingUrl = `https://pipedream.com/webhooks/${timestamp}`;
+            
+            // Also try a simpler image pixel tracker
+            const img = new Image();
+            img.src = `https://api.countapi.xyz/hit/iscolinfree-colin/pings?_=${timestamp}`;
+            
+            console.log('Ping sent at', timestamp);
             
             // Reset visual after delay
             setTimeout(() => {
