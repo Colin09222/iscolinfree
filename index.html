@@ -551,9 +551,8 @@
                     <span class="panel-status">PING</span>
                 </div>
                 <div class="panel-content">
-                    <div style="text-align: center; padding: 15px; color: var(--text-dim);">
-                        Want an update? DM @ColonCosbie
-                    </div>
+                    <div id="update-request-btn" style="width: 100%; padding: 20px; cursor: pointer; font-size: 1rem; background: rgba(0,255,65,0.1); border: 2px solid var(--green); text-align: center; font-family: 'Share Tech Mono', monospace; color: var(--green); user-select: none; -webkit-user-select: none;">TAP TO ASK COLIN FOR UPDATE</div>
+                    <div id="update-status" style="margin-top: 10px; color: var(--green); font-size: 0.85rem; text-align: center;"></div>
                 </div>
             </div>
             
@@ -768,14 +767,17 @@
             btn.style.background = 'rgba(0,255,65,0.3)';
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            // SIMPLEST POSSIBLE: Just send the request info as URL params
-            // Buddeh will check the GitHub repo's access logs
+            // Use FormSubmit.co - free form backend that works with CORS
             const timestamp = Date.now();
+            const formData = new FormData();
+            formData.append('timestamp', new Date().toISOString());
+            formData.append('source', 'iscolinfree');
             
-            // Make a GET request to the request-count file with unique timestamp
-            fetch(`./request-count.txt?ping=${timestamp}`, { cache: 'no-store' })
-                .then(() => console.log('Pinged'))
-                .catch(() => console.log('Sent'));
+            fetch('https://formsubmit.co/ajax/update-iscolinfree@formsubmit.co', {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => console.log('Sent')).catch(() => console.log('Sent'));
             
             // Reset visual after delay
             setTimeout(() => {
