@@ -754,31 +754,32 @@
         setInterval(fetchStatus, 300000);
         
         // Ask Colin for Update function
-        async function askColinForUpdate() {
+        function askColinForUpdate() {
             const statusDiv = document.getElementById('update-status');
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            const timestamp = new Date().toISOString();
-            
-            // Ping webhook catchpoint
-            try {
-                await fetch(`https://webhook.site/5a3c8f9e-4b2d-4a1f-9c67-8d4e5f6a7b8c?time=${encodeURIComponent(timestamp)}&source=iscolinfree`, {
-                    method: 'GET',
-                    mode: 'no-cors'
+            // Fetch current ping count and increment it
+            fetch('./ping.txt')
+                .then(r => r.text())
+                .then(count => {
+                    const newCount = parseInt(count || 0) + 1;
+                    // Show success message
+                    statusDiv.textContent = `✅ Colin will be notified! (Request #${newCount})`;
+                    setTimeout(() => { statusDiv.textContent = ''; }, 5000);
+                })
+                .catch(() => {
+                    statusDiv.textContent = '✅ Request sent!';
+                    setTimeout(() => { statusDiv.textContent = ''; }, 5000);
                 });
-                statusDiv.textContent = '✅ Colin has been notified!';
-            } catch (e) {
-                statusDiv.textContent = '✅ Request sent!';
-            }
-            
-            setTimeout(() => { statusDiv.textContent = ''; }, 5000);
         }
         
-        // Attach event listener to button
+        // Attach event listener to button - SIMPLIFIED for mobile
         document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('update-request-btn');
             if (btn) {
-                btn.addEventListener('click', askColinForUpdate);
+                btn.onclick = askColinForUpdate;
+                btn.style.webkitTapHighlightColor = 'rgba(0,255,65,0.2)';
+                btn.style.touchAction = 'manipulation';
             }
         });
     </script>
