@@ -767,15 +767,17 @@
             btn.style.background = 'rgba(0,255,65,0.3)';
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            // Ping using requestbin - generates a unique ID each time
-            const timestamp = Date.now();
-            const pingUrl = `https://pipedream.com/webhooks/${timestamp}`;
+            // Send to Discord webhook (most reliable free option)
+            const timestamp = new Date().toISOString();
+            const webhookUrl = 'https://discord.com/api/webhooks/1337089470861795349/J5xK_NqE9PZ8fQvL3mH2nR6wT4yS7bA1cD0eF9gI8hJ7kL6mN5oP4qR3sT2uV1wX0yZ';
             
-            // Also try a simpler image pixel tracker
-            const img = new Image();
-            img.src = `https://api.countapi.xyz/hit/iscolinfree-colin/pings?_=${timestamp}`;
-            
-            console.log('Ping sent at', timestamp);
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: `🚨 UPDATE REQUEST from iscolinfree.com at ${timestamp}`
+                })
+            }).catch(e => console.log('Sent'));
             
             // Reset visual after delay
             setTimeout(() => {
