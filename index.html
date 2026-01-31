@@ -767,17 +767,14 @@
             btn.style.background = 'rgba(0,255,65,0.3)';
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            // Send to Discord webhook (most reliable free option)
-            const timestamp = new Date().toISOString();
-            const webhookUrl = 'https://discord.com/api/webhooks/1337089470861795349/J5xK_NqE9PZ8fQvL3mH2nR6wT4yS7bA1cD0eF9gI8hJ7kL6mN5oP4qR3sT2uV1wX0yZ';
+            // SIMPLEST POSSIBLE: Just send the request info as URL params
+            // Buddeh will check the GitHub repo's access logs
+            const timestamp = Date.now();
             
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: `🚨 UPDATE REQUEST from iscolinfree.com at ${timestamp}`
-                })
-            }).catch(e => console.log('Sent'));
+            // Make a GET request to the request-count file with unique timestamp
+            fetch(`./request-count.txt?ping=${timestamp}`, { cache: 'no-store' })
+                .then(() => console.log('Pinged'))
+                .catch(() => console.log('Sent'));
             
             // Reset visual after delay
             setTimeout(() => {
