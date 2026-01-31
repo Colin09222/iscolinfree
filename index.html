@@ -754,27 +754,24 @@
         setInterval(fetchStatus, 300000);
         
         // Ask Colin for Update function
-        function askColinForUpdate() {
+        async function askColinForUpdate() {
             const statusDiv = document.getElementById('update-status');
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            // Send request to Buddeh to ping Colin on Telegram
-            fetch('https://openclaw.ai/api/ping-colin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    message: 'Someone requested an update on iscolinfree.com!',
-                    timestamp: new Date().toISOString()
-                })
-            })
-            .then(() => {
+            const timestamp = new Date().toISOString();
+            
+            // Use a simple GET request to a Pipedream endpoint that will notify Colin
+            try {
+                await fetch(`https://eo0q5r3lhq03z9h.m.pipedream.net?timestamp=${encodeURIComponent(timestamp)}&site=iscolinfree`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
                 statusDiv.textContent = '✅ Colin has been notified!';
-                setTimeout(() => { statusDiv.textContent = ''; }, 5000);
-            })
-            .catch(() => {
+            } catch (e) {
                 statusDiv.textContent = '✅ Request sent!';
-                setTimeout(() => { statusDiv.textContent = ''; }, 5000);
-            });
+            }
+            
+            setTimeout(() => { statusDiv.textContent = ''; }, 5000);
         }
     </script>
 </body>
