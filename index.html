@@ -551,8 +551,8 @@
                     <span class="panel-status">PING</span>
                 </div>
                 <div class="panel-content">
-                    <button class="poll-btn" onclick="askColinForUpdate()" style="width: 100%; margin-top: 10px;">Click to ask Colin for an update</button>
-                    <div id="update-status" style="margin-top: 10px; color: var(--green); font-size: 0.85rem;"></div>
+                    <button id="update-request-btn" class="poll-btn" style="width: 100%; padding: 15px; cursor: pointer; font-size: 1rem; background: rgba(0,255,65,0.05); border: 1px solid var(--green);">CLICK TO ASK COLIN FOR AN UPDATE</button>
+                    <div id="update-status" style="margin-top: 10px; color: var(--green); font-size: 0.85rem; text-align: center;"></div>
                 </div>
             </div>
             
@@ -773,6 +773,14 @@
             
             setTimeout(() => { statusDiv.textContent = ''; }, 5000);
         }
+        
+        // Attach event listener to button
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('update-request-btn');
+            if (btn) {
+                btn.addEventListener('click', askColinForUpdate);
+            }
+        });
     </script>
 </body>
 </html>
