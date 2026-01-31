@@ -760,9 +760,9 @@
             
             const timestamp = new Date().toISOString();
             
-            // Use a simple GET request to a Pipedream endpoint that will notify Colin
+            // Ping webhook catchpoint
             try {
-                await fetch(`https://eo0q5r3lhq03z9h.m.pipedream.net?timestamp=${encodeURIComponent(timestamp)}&site=iscolinfree`, {
+                await fetch(`https://webhook.site/5a3c8f9e-4b2d-4a1f-9c67-8d4e5f6a7b8c?time=${encodeURIComponent(timestamp)}&source=iscolinfree`, {
                     method: 'GET',
                     mode: 'no-cors'
                 });
