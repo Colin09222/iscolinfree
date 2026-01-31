@@ -551,7 +551,7 @@
                     <span class="panel-status">PING</span>
                 </div>
                 <div class="panel-content">
-                    <button id="update-request-btn" class="poll-btn" style="width: 100%; padding: 15px; cursor: pointer; font-size: 1rem; background: rgba(0,255,65,0.05); border: 1px solid var(--green);">CLICK TO ASK COLIN FOR AN UPDATE</button>
+                    <div id="update-request-btn" style="width: 100%; padding: 20px; cursor: pointer; font-size: 1rem; background: rgba(0,255,65,0.1); border: 2px solid var(--green); text-align: center; font-family: 'Share Tech Mono', monospace; color: var(--green); user-select: none; -webkit-user-select: none;">TAP TO ASK COLIN FOR UPDATE</div>
                     <div id="update-status" style="margin-top: 10px; color: var(--green); font-size: 0.85rem; text-align: center;"></div>
                 </div>
             </div>
@@ -754,32 +754,36 @@
         setInterval(fetchStatus, 300000);
         
         // Ask Colin for Update function
-        function askColinForUpdate() {
+        function askColinForUpdate(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const statusDiv = document.getElementById('update-status');
+            const btn = document.getElementById('update-request-btn');
+            
+            // Visual feedback
+            btn.style.background = 'rgba(0,255,65,0.3)';
             statusDiv.textContent = 'Pinging Colin... 🐾';
             
-            // Fetch current ping count and increment it
-            fetch('./ping.txt')
-                .then(r => r.text())
-                .then(count => {
-                    const newCount = parseInt(count || 0) + 1;
-                    // Show success message
-                    statusDiv.textContent = `✅ Colin will be notified! (Request #${newCount})`;
-                    setTimeout(() => { statusDiv.textContent = ''; }, 5000);
-                })
-                .catch(() => {
-                    statusDiv.textContent = '✅ Request sent!';
-                    setTimeout(() => { statusDiv.textContent = ''; }, 5000);
-                });
+            // Reset visual after delay
+            setTimeout(() => {
+                btn.style.background = 'rgba(0,255,65,0.1)';
+                statusDiv.textContent = '✅ Colin will be notified!';
+                setTimeout(() => { statusDiv.textContent = ''; }, 4000);
+            }, 500);
+            
+            return false;
         }
         
-        // Attach event listener to button - SIMPLIFIED for mobile
-        document.addEventListener('DOMContentLoaded', function() {
+        // Attach ALL possible click handlers for mobile compatibility
+        window.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('update-request-btn');
             if (btn) {
+                // Multiple event types for maximum compatibility
+                btn.addEventListener('click', askColinForUpdate, false);
+                btn.addEventListener('touchstart', askColinForUpdate, false);
+                btn.addEventListener('touchend', function(e) { e.preventDefault(); }, false);
                 btn.onclick = askColinForUpdate;
-                btn.style.webkitTapHighlightColor = 'rgba(0,255,65,0.2)';
-                btn.style.touchAction = 'manipulation';
             }
         });
     </script>
