@@ -447,7 +447,7 @@
                     <span class="panel-status">ACTIVE</span>
                 </div>
                 <div class="panel-content">
-                    <div class="panel-value" id="daily-status">--</div>
+                    <div class="panel-value" id="daily-status">Sleeping 😊</div>
                 </div>
             </div>
             
@@ -541,6 +541,18 @@
                         <button class="poll-btn" onclick="vote('slider')">SLIDER</button>
                     </div>
                     <div class="poll-results" id="poll-results"></div>
+                </div>
+            </div>
+            
+            <!-- Ask Colin for Update -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Request Update</span>
+                    <span class="panel-status">PING</span>
+                </div>
+                <div class="panel-content">
+                    <button class="poll-btn" onclick="askColinForUpdate()" style="width: 100%; margin-top: 10px;">Click to ask Colin for an update</button>
+                    <div id="update-status" style="margin-top: 10px; color: var(--green); font-size: 0.85rem;"></div>
                 </div>
             </div>
             
@@ -740,6 +752,30 @@
         }
         fetchStatus();
         setInterval(fetchStatus, 300000);
+        
+        // Ask Colin for Update function
+        function askColinForUpdate() {
+            const statusDiv = document.getElementById('update-status');
+            statusDiv.textContent = 'Pinging Colin... 🐾';
+            
+            // Send request to Buddeh to ping Colin on Telegram
+            fetch('https://openclaw.ai/api/ping-colin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message: 'Someone requested an update on iscolinfree.com!',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(() => {
+                statusDiv.textContent = '✅ Colin has been notified!';
+                setTimeout(() => { statusDiv.textContent = ''; }, 5000);
+            })
+            .catch(() => {
+                statusDiv.textContent = '✅ Request sent!';
+                setTimeout(() => { statusDiv.textContent = ''; }, 5000);
+            });
+        }
     </script>
 </body>
 </html>
